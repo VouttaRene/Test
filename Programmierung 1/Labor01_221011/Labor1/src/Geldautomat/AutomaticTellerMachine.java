@@ -46,7 +46,7 @@ package Geldautomat;
 import java.util.Scanner;
 
 /*This class simulates a virtual ATM. We only have 500, 200 , 100, 50, 20, 10 and 5 Euro 
-*bills. A withdrawal request that doesn`t fit this criteria should be denied.
+*bills. A withdrawal request that does not fit this criteria should be denied.
 *For simplicity we assume that the ATM has an unlimited number of bills available.
 */
 public class AutomaticTellerMachine {
@@ -66,7 +66,7 @@ public class AutomaticTellerMachine {
 		System.out.println("What medium do you want to use to withdraw money: Girocard (1) or credit card (2) ?");
 		
 		
-		boolean validCardType = false;		//Flag for accepted creditCard.
+		boolean validCardType = false;		//Flag for accepted/valid card.
 		String card = "none";
 		
 		while(!validCardType) {
@@ -101,7 +101,7 @@ public class AutomaticTellerMachine {
 				Berechnung(withdraw);	//Amount is acceptable and the bills will be calculated.
 			}else {
 				System.out.println("Your request was denied! Invalid withdrawal!");
-				//Withdrawal was denied. It will ask for a new withdrawal amount.
+				//Withdrawal was denied. It will ask for a new withdrawal amount until a correct amount was put in.
 			}
 		}
 		
@@ -118,35 +118,37 @@ public class AutomaticTellerMachine {
 		int ten = 0;
 		int five = 0;
 		
-		while(withdrawal >= 500) {
-			fiveHundred = withdrawal / 500;
-			withdrawal = withdrawal - (fiveHundred * 500);
+		if(withdrawal >= 500) {
+			fiveHundred = withdrawal / 500;						//By doing a division with integer we get the amount of bills that we can deal out 
+			withdrawal = withdrawal - (fiveHundred * 500);		//We deduct the amount of bills from the withdrawal and continue with the next smaller bill with the updated withdrawal.
 		}
-		while(withdrawal >= 200) {
+		if(withdrawal >= 200) {
 			twoHundred = withdrawal / 200;
 			withdrawal = withdrawal - (twoHundred * 200);
 		}
-		while(withdrawal >= 100) {
+		if(withdrawal >= 100) {
 			oneHundred = withdrawal / 100;
 			withdrawal = withdrawal - (oneHundred * 100);
 		}
-		while(withdrawal >= 50) {
+		if(withdrawal >= 50) {
 			fifty = withdrawal / 50;
 			withdrawal = withdrawal - (fifty * 50);
 		}
-		while(withdrawal >= 20) {
+		if(withdrawal >= 20) {
 			twenty = withdrawal / 20;
 			withdrawal = withdrawal - (twenty * 20);
 		}
-		while(withdrawal >= 10) {
+		if(withdrawal >= 10) {
 			ten = withdrawal / 10;
 			withdrawal = withdrawal - (ten * 10);
 		}
-		while(withdrawal >= 5) {
+		if(withdrawal >= 5) {
 			five = withdrawal / 5;
 			withdrawal = withdrawal - (five * 5);
 		}
 		
+		
+		//Printing out the amount of bills we need to deal out the right amount 
 		System.out.println(fiveHundred + " times 500 Euro bills");
 		System.out.println(twoHundred + " times 200 Euro bills");
 		System.out.println(oneHundred + " times 100 Euro bills");
