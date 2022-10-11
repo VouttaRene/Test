@@ -51,7 +51,7 @@ import java.util.Scanner;
 */
 public class AutomaticTellerMachine {
 	
-	//Declaring and initialising a scanner to be able to input arguments through our console.
+	//Declaring and initializing a scanner to be able to input arguments through our console.
 	static Scanner scanner = new Scanner(System.in);
 	
 	public static void main (String[] args) {
