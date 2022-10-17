@@ -119,7 +119,6 @@ public class AutomaticTellerMachine {
 				continue;
 			}
 		}
-		
 	}
 
 	//This method does the calculation of the amount of bills.
