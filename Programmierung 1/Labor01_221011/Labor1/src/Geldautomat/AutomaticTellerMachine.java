@@ -87,7 +87,7 @@ public class AutomaticTellerMachine {
 				}
 				
 			}catch(Exception e) {
-				System.out.println("Error!\nTry again!");
+				System.out.println("Error 1!\nTry again! Please input \"1\" or \"2\"!");
 				scanner.next();
 				continue;
 			}
@@ -104,12 +104,19 @@ public class AutomaticTellerMachine {
 		long withdraw = 0L;
 		
 		while(withdraw == 0 || withdraw % 5 != 0) {
-			withdraw = scanner.nextLong();
-			if (withdraw % 5 == 0 && withdraw > 0) {
-				Berechnung(withdraw);	//Amount is acceptable and the bills will be calculated.
-			}else {
-				System.out.println("Your request was denied! Invalid withdrawal!");
-				//Withdrawal was denied. It will ask for a new withdrawal amount until a correct amount was put in.
+			try {
+				withdraw = scanner.nextLong();
+				if (withdraw % 5 == 0 && withdraw > 0) {
+					Berechnung(withdraw);	//Amount is acceptable and the bills will be calculated.
+				}else {
+					System.out.println("Your request was denied! Invalid withdrawal!");
+					//Withdrawal was denied. It will ask for a new withdrawal amount until a correct amount was put in.
+				}
+			}
+			catch(Exception e) {
+				System.out.println("Error 2!\nTry again! Please input a valid withdrawal amount!");
+				scanner.next();
+				continue;
 			}
 		}
 		
