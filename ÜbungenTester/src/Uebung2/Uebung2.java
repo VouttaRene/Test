@@ -5,12 +5,12 @@ public class Uebung2 {
 	public static void main(String[] args) {
 	
 		//Aufgabe 7 aufrufe
-		int a = 3;
+		int a = 4;
 		System.out.println(calc1(a));
 		System.out.println(fak(a));
 		
 		//Aufgabe 8 aufrufe
-		int b = 3;
+		int b = 122;
 		System.out.println(calc2(a, b));
 		
 	}
