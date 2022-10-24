@@ -72,20 +72,28 @@ public class AutomaticTellerMachine {
 		String card = "none";
 		
 		while(!validCardType) {
-			int cardType = scanner.nextInt();
-			switch(cardType) {
-			case 1:			//Valid Input: Case Girocard
-				card = "Girocard";
-				validCardType = true;
-				break;
-			case 2:			//Valid Input: Case Credit Card
-				card = "credit card";
-				validCardType = true;
-				break;
-			default:		//Invalid Input! Try again
-				System.out.println("Incorrect Card type! Try again!");
-				break;
+			try {
+				int cardType = scanner.nextInt();
+				switch(cardType) {
+				case 1:			//Valid Input: Case Girocard
+					card = "Girocard";
+					validCardType = true;
+					break;
+				case 2:			//Valid Input: Case Credit Card
+					card = "credit card";
+					validCardType = true;
+					break;
+				default:		//Invalid Input! Try again
+					System.out.println("Incorrect Card type! Try again!");
+					break;
+				}
+				
+			}catch(Exception e) {
+				System.out.println("Error 1!\nTry again! Please input \"1\" or \"2\"!");
+				scanner.next();
+				continue;
 			}
+			
 		}
 		
 		System.out.println("You have selected: " + card + ".");
@@ -95,30 +103,36 @@ public class AutomaticTellerMachine {
 	//This method asks for the withdrawal amount and checks if the amount is acceptable 
 	public static void WithdrawCalc() {		
 		System.out.println("How much do you want to withdraw?");
-		int withdraw = 0;
+		long withdraw = 0L;
 		
 		while(withdraw == 0 || withdraw % 5 != 0) {
-			withdraw = scanner.nextInt();
-			if (withdraw % 5 == 0 && withdraw > 0) {
-				Berechnung(withdraw);	//Amount is acceptable and the bills will be calculated.
-			}else {
-				System.out.println("Your request was denied! Invalid withdrawal!");
-				//Withdrawal was denied. It will ask for a new withdrawal amount until a correct amount was put in.
+			try {
+				withdraw = scanner.nextLong();
+				if (withdraw % 5 == 0 && withdraw > 0) {
+					Berechnung(withdraw);	//Amount is acceptable and the bills will be calculated.
+				}else {
+					System.out.println("Your request was denied! Invalid withdrawal!");
+					//Withdrawal was denied. It will ask for a new withdrawal amount until a correct amount was put in.
+				}
+			}
+			catch(Exception e) {
+				System.out.println("Error 2!\nTry again! Please input a valid withdrawal amount!");
+				scanner.next();
+				continue;
 			}
 		}
-		
 	}
 
 	//This method does the calculation of the amount of bills.
 	//At last it will print out the amount of bills.
-	private static void Berechnung(int withdrawal) {
-		int fiveHundred = 0;
-		int twoHundred = 0;
-		int oneHundred = 0;
-		int fifty = 0;
-		int twenty = 0;
-		int ten = 0;
-		int five = 0;
+	private static void Berechnung(long withdrawal) {
+		long fiveHundred = 0;
+		long twoHundred = 0;
+		long oneHundred = 0;
+		long fifty = 0;
+		long twenty = 0;
+		long ten = 0;
+		long five = 0;
 		
 		if(withdrawal >= 500) {
 			fiveHundred = withdrawal / 500;						//By doing a division with integer we get the amount of bills that we can deal out 
