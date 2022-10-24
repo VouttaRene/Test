@@ -59,6 +59,8 @@ public class AutomaticTellerMachine {
 		AskForCard();
 		WithdrawCalc();
 		System.out.println("Thanks for using our ATM");
+		
+		scanner.close();		//Scanner is closed so that no further input is doable
 	}
 	
 	//This method asks the user for the card type. Either Girocard or credit card are accepted.
@@ -158,5 +160,7 @@ public class AutomaticTellerMachine {
 		System.out.println(five + " times 5 Euro bills");
 		
 	}
+	
+	
 
 }
