@@ -110,7 +110,7 @@ public class AutomaticTellerMachine {
 
 		//Call Search methods
 		System.out.println("The lowest amount is: " + SearchForSmallest(withdrawals));		//Print out smallest Value of withdrawal amounts
-		System.out.println("The second highest amount is: " + SearchForSecondHighest(withdrawals));		//Print out second highest withdrawal amunt
+		System.out.println("The second highest amount is: " + SearchForSecondHighest(withdrawals));		//Print out second highest withdrawal amount
 		System.out.println("The average of all amounts is: " + CalcAverage(withdrawals));		//Print out the average of the array
 		System.out.println("\nThanks for using our ATM");
 		
@@ -118,7 +118,7 @@ public class AutomaticTellerMachine {
 	}
 	
 	//This method asks the user for the card type. Either Girocard or credit card are accepted.
-	public static void AskForCard() {
+	private static void AskForCard() {
 		System.out.println("What medium do you want to use to withdraw money: Girocard (1) or credit card (2) ?");
 		
 		boolean validCardType = false;		//Flag for accepted/valid card.
@@ -151,7 +151,7 @@ public class AutomaticTellerMachine {
 	}
 	
 	//This method asks for the withdrawal amount and checks if the amount is acceptable 
-	public static long WithdrawCalc() {		
+	private static long WithdrawCalc() {		
 		System.out.println("How much do you want to withdraw?");
 		long withdraw = 0L;
 		
