@@ -103,9 +103,11 @@ public class AutomaticTellerMachine {
 		
 		//Print out all withdrawals
 		System.out.println("The following amounts were withdrawn:");
-		for (int j = 0; j < withdrawals.length; j++) {
-			System.out.println(withdrawals[j] + " Euro");
+		for(long amount : withdrawals) {
+			System.out.println(amount + " Euro");
 		}
+		
+		//Print out how many withdrawals have been done
 		System.out.println("------------\nYou withdrew " + withdrawals.length + " amounts.\n------------");
 		
 		//Call Search methods and print out the results
