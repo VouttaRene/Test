@@ -97,7 +97,7 @@ public class AutomaticTellerMachine {
 		
 		//Ask for a withdrawal 5 times and store the amounts in an array
 		for(int i = 0; i < withdrawals.length; i++) {
-			System.out.print((i+1) + ". withdrawal: ");
+			System.out.print((i+1) + ". Withdrawal: ");
 			withdrawals[i] = WithdrawCalc();
 		}
 		
@@ -114,7 +114,7 @@ public class AutomaticTellerMachine {
 		System.out.println("The average of all amounts is: " + CalcAverage(withdrawals));		//Print out the average of the array
 		System.out.println("------------\nThanks for using our ATM.");
 		
-		scanner.close();		//Scanner is closed so that no further input is doable
+		scanner.close();		//Scanner is closed so that no further input can be done
 	}
 	
 	//This method asks the user for the card type. Either Girocard or credit card are accepted.
@@ -125,7 +125,7 @@ public class AutomaticTellerMachine {
 		String card = "none";
 		
 		while(!validCardType) {
-			try {
+			try {		//try to do user input if not catch exception
 				int cardType = scanner.nextInt();
 				switch(cardType) {
 				case 1:			//Valid Input: Case Girocard
@@ -141,7 +141,7 @@ public class AutomaticTellerMachine {
 					break;
 				}
 				
-			}catch(Exception e) {
+			}catch(Exception e) {		//if there is an exception than catch it here and return an error code (preferably an easy to understand one)
 				System.out.println("Error 1!\nTry again! Please input \"1\" or \"2\"!");
 				scanner.next();
 				continue;
@@ -156,7 +156,7 @@ public class AutomaticTellerMachine {
 		long withdraw = 0L;
 		
 		while(withdraw == 0 || withdraw % 5 != 0) {
-			try {
+			try {		//try to do user input if not catch exception
 				withdraw = scanner.nextLong();
 				if (withdraw % 5 == 0 && withdraw > 0) {
 					Berechnung(withdraw);	//Amount is acceptable and the bills will be calculated.
@@ -165,7 +165,7 @@ public class AutomaticTellerMachine {
 					//Withdrawal was denied. It will ask for a new withdrawal amount until a correct amount was put in.
 				}
 			}
-			catch(Exception e) {
+			catch(Exception e) {		//if there is an exception than catch it here and return an error code (preferably an easy to understand one)
 				System.out.println("Error 2!\nTry again! Please input a valid withdrawal amount!");
 				scanner.next();
 				continue;
