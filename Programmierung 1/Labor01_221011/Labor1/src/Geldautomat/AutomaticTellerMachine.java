@@ -90,7 +90,7 @@ public class AutomaticTellerMachine {
 	public static void main (String[] args) {
 
 		//Initialize an array to store withdrawal amounts.
-		long[] withdrawals = new long[5];	 
+		long[] withdrawals = new long[5];
 		
 		//Call Method to ask For Card
 		AskForCard();
@@ -102,21 +102,17 @@ public class AutomaticTellerMachine {
 		}
 		
 		//Print out all withdrawals
-		System.out.println("------------\nThe following amounts were withdrawn:");
+		System.out.println("The following amounts were withdrawn:");
 		for (int j = 0; j < withdrawals.length; j++) {
 			System.out.println(withdrawals[j] + " Euro");
 		}
-		System.out.println("You withdrew " + withdrawals.length + " amounts.\n------------");
+		System.out.println("------------\nYou withdrew " + withdrawals.length + " amounts.\n------------");
 		
-		//WIP
-		long smallest = SearchForSmallest(withdrawals);
-		long secondHigh = SearchForSecondHighest(withdrawals);
-		long average = CalcAverage(withdrawals);
-		//Call Search methods
-		System.out.println("The lowest amount is: " + smallest);		//Print out smallest Value of withdrawal amounts
-		System.out.println("The second highest amount is: " + secondHigh);		//Print out second highest withdrawal amount
-		System.out.println("The average of all amounts is: " + average);		//Print out the average of the array
-		System.out.println("\nThanks for using our ATM");
+		//Call Search methods and print out the results
+		System.out.println("The lowest amount is: " + SearchForSmallest(withdrawals));		//Print out smallest Value of withdrawal amounts
+		System.out.println("The second highest amount is: " + SearchForSecondHighest(withdrawals));		//Print out second highest withdrawal amount
+		System.out.println("The average of all amounts is: " + CalcAverage(withdrawals));		//Print out the average of the array
+		System.out.println("------------\nThanks for using our ATM.");
 		
 		scanner.close();		//Scanner is closed so that no further input is doable
 	}
@@ -247,9 +243,8 @@ public class AutomaticTellerMachine {
 		}
 		smallestValue = withdrawals[0];	//Smallest value is stored inside the first element
 		
-		//return smallest value
 		return smallestValue;
-	}
+		}
 	
 	//Second Method: Return second highest value in array
 	private static long SearchForSecondHighest(long[] withdrawals) {
@@ -267,9 +262,9 @@ public class AutomaticTellerMachine {
 				}
 			}
 		}
-		secondHighestValue = withdrawals[withdrawals.length-2];	//Second Highest value is stored inside the second element
+		secondHighestValue = withdrawals[1];	//Second Highest value is stored inside the second element
 		
-		//return smallest value
+		//return secondHighest value
 		return secondHighestValue;
 	}
 	
