@@ -111,8 +111,13 @@ public class AutomaticTellerMachine {
 		System.out.println("------------\nYou withdrew " + withdrawals.length + " amounts.\n------------");
 		
 		//Call Search methods and print out the results
-		System.out.println("The lowest amount is: " + SearchForSmallest(withdrawals));		//Print out smallest Value of withdrawal amounts
-		System.out.println("The second highest amount is: " + SearchForSecondHighest(withdrawals));		//Print out second highest withdrawal amount
+		System.out.println("The lowest amount is: " + SmallSearch(withdrawals));		//Print out smallest Value of withdrawal amounts
+		if(SearchSecondHigh(withdrawals) == 0) {
+			System.out.println("Alle Werte sind gleich");
+		}
+		else {
+			System.out.println("The second highest amount is: " + SearchSecondHigh(withdrawals));		//Print out second highest withdrawal amount
+		}
 		System.out.println("The average of all amounts is: " + CalcAverage(withdrawals));		//Print out the average of the array
 		System.out.println("------------\nThanks for using our ATM.");
 		
@@ -163,7 +168,7 @@ public class AutomaticTellerMachine {
 				if (withdraw % 5 == 0 && withdraw > 0) {
 					Berechnung(withdraw);	//Amount is acceptable and the bills will be calculated.
 				}else {
-					System.out.println("Your request was denied! Invalid withdrawal!");
+					System.out.println("Your request was denied! Invalid withdrawal!\nTry again! Please input a valid amount!");
 					//Withdrawal was denied. It will ask for a new withdrawal amount until a correct amount was put in.
 				}
 			}
@@ -228,52 +233,39 @@ public class AutomaticTellerMachine {
 	
 	//The following methods are sorting the withdrawal array and return different value depending on what's ask for.
 	//First Method: Return smallest value in array
-	private static long SearchForSmallest(long[] withdrawals) {
-		long smallestValue = -1;		//Declare Variable to store smallest value which will be returned later. Initialize it with -1 to be sure it can be returned and a mistake will be easily seen.
-		long temp; 		//temporary Variable to help change value inside the array.
-		
-		//Sort the array in ascending order
-		for(int i = withdrawals.length - 1; i > 0; i++) {		//defines for how long the array will be checked
-			for(int j = 0; j < withdrawals.length - 1; j++) {		//Inside this for loop we will look in ascending order if neighboring values are in the right order
-				//Check if two neighboring values are in the right order
-				if(withdrawals[j] > withdrawals[j+1]) {
-					temp = withdrawals[j];	//Store the bigger value inside the temp variable
-					withdrawals[j] = withdrawals[j+1];	//Store smaller value in the former bigger array element 
-					withdrawals[j+1] = temp;	//Store temp Variable, the bigger value, inside the higher array element
-				}
+	private static long SmallSearch(long[] withdrawals) {
+		long smallestValue = withdrawals[0];	//Declare Variable to store smallest value which will be returned later. Initialize it with the first element of the array
+		for(int i = 1; i < withdrawals.length; i++) {
+			if(smallestValue > withdrawals[i]) {		
+				smallestValue = withdrawals[i];		//if the withdrawal amount in the array[i] is smaller than the value of the Variable smallestValue than set the array value as new smallestValue, else do next element
 			}
 		}
-		smallestValue = withdrawals[0];	//Smallest value is stored inside the first element
-		
 		return smallestValue;
-		}
+	}
 	
 	//Second Method: Return second highest value in array
-	private static long SearchForSecondHighest(long[] withdrawals) {
-		long secondHighestValue = -1;		//Declare Variable to store smallest value which will be returned later. Initialize it with -1 to be sure it can be returned and a mistake will be easily seen.
-		long temp; 		//temporary Variable to help change value inside the array.
+	private static long SearchSecondHigh(long[] withdrawals) {
+		long highest = withdrawals[0];	//Declare Variable to store smallest value which will be returned later. Initialize it with the first element of the array
+		long secondHighest = 0;
 		
-		//Sort the array in ascending order
-		for(int i = withdrawals.length - 1; i > 0; i++) {		//defines for how long the array will be checked
-			for(int j = 0; j < withdrawals.length - 1; j++) {		//Inside this for loop we will look in ascending order if neighboring values are in the right order
-				//Check if two neighboring values are in the right order
-				if(withdrawals[j] < withdrawals[j+1]) {
-					temp = withdrawals[j+1];	//Store the bigger value inside the temp variable
-					withdrawals[j+1] = withdrawals[j];	//Store smaller value in the former bigger array element 
-					withdrawals[j] = temp;	//Store temp Variable, the bigger value, inside the higher array element
-				}
+		for(int i = 1; i < withdrawals.length; i++) {
+			//Check if the next element in the array is smaller than highest and bigger than secondHighest. if true than set array[i] value as new secondHighest
+			if(withdrawals[i] < highest && withdrawals[i] > secondHighest) {		
+				secondHighest = withdrawals[i];
+			}
+			//Check if the next element in the array is bigger than highest. If true set highest as new secondHighest and array[i] Value as new highest
+			else if(withdrawals[i] > highest) {
+				secondHighest = highest;
+				highest = withdrawals[i];
 			}
 		}
-		secondHighestValue = withdrawals[1];	//Second Highest value is stored inside the second element
-		
-		//return secondHighest value
-		return secondHighestValue;
+		return secondHighest;
 	}
 	
 	//Third Method: Return the Average of an array
 	private static long CalcAverage(long[] withdrawals) {
-		long average = -1;
-		long sumOfArray = 0;
+		long average = -1;		//Declare Variable to store smallest value which will be returned later. Initialize it with -1 to be sure it can be returned and a mistake will be easily seen.
+		long sumOfArray = 0;	
 		
 		//Calculate the sum of the array
 		for(int i = 0; i < withdrawals.length; i++) {
