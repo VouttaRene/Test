@@ -97,6 +97,7 @@ public class AutomaticTellerMachine {
 		
 		//Ask for a withdrawal 5 times and store the amounts in an array
 		for(int i = 0; i < withdrawals.length; i++) {
+			System.out.print((i+1) + ". withdrawal: ");
 			withdrawals[i] = WithdrawCalc();
 		}
 		
@@ -107,11 +108,14 @@ public class AutomaticTellerMachine {
 		}
 		System.out.println("You withdrew " + withdrawals.length + " amounts.\n------------");
 		
-
+		//WIP
+		long smallest = SearchForSmallest(withdrawals);
+		long secondHigh = SearchForSecondHighest(withdrawals);
+		long average = CalcAverage(withdrawals);
 		//Call Search methods
-		System.out.println("The lowest amount is: " + SearchForSmallest(withdrawals));		//Print out smallest Value of withdrawal amounts
-		System.out.println("The second highest amount is: " + SearchForSecondHighest(withdrawals));		//Print out second highest withdrawal amount
-		System.out.println("The average of all amounts is: " + CalcAverage(withdrawals));		//Print out the average of the array
+		System.out.println("The lowest amount is: " + smallest);		//Print out smallest Value of withdrawal amounts
+		System.out.println("The second highest amount is: " + secondHigh);		//Print out second highest withdrawal amount
+		System.out.println("The average of all amounts is: " + average);		//Print out the average of the array
 		System.out.println("\nThanks for using our ATM");
 		
 		scanner.close();		//Scanner is closed so that no further input is doable
