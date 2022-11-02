@@ -73,6 +73,8 @@
  * sondern implementieren Sie dies selbst mit Hilfe Schleifen und Bedingungen.
  * • Implementieren Sie eine Methode, die den Mittelwert aus den fünf Geldbeträgen des Arrays bestimmt.
  * 
+ * 
+ * Hallo
  */
 package Geldautomat;
 //Importing java.util.Scanner to get import using the console
