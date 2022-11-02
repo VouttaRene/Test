@@ -89,7 +89,6 @@ public class AutomaticTellerMachine {
 	static Scanner scanner = new Scanner(System.in);
 	
 	public static void main (String[] args) {
-
 		//Initialize an array to store withdrawal amounts.
 		long[] withdrawals = new long[5];
 		
@@ -114,7 +113,7 @@ public class AutomaticTellerMachine {
 		//Call Search methods and print out the results
 		System.out.println("The lowest amount is: " + SmallSearch(withdrawals));		//Print out smallest Value of withdrawal amounts
 		if(SearchSecondHigh(withdrawals) == 0) {
-			System.out.println("Alle Werte sind gleich");
+			System.out.println("Alle Werte sind gleich.");		//All amounts are equal to each other. That's why there is no value for secondHigh
 		}
 		else {
 			System.out.println("The second highest amount is: " + SearchSecondHigh(withdrawals));		//Print out second highest withdrawal amount
@@ -136,20 +135,20 @@ public class AutomaticTellerMachine {
 			try {		//try to do user input if not catch exception
 				int cardType = scanner.nextInt();
 				switch(cardType) {
-				case 1:			//Valid Input: Case Girocard
-					card = "Girocard";
-					validCardType = true;
-					break;
-				case 2:			//Valid Input: Case Credit Card
-					card = "credit card";
-					validCardType = true;
-					break;
-				default:		//Invalid Input! Try again
-					System.out.println("Incorrect Card type! Try again!");
-					break;
+					case 1:			//Valid Input: Case Girocard
+						card = "Girocard";
+						validCardType = true;
+						break;
+					case 2:			//Valid Input: Case Credit Card
+						card = "credit card";
+						validCardType = true;
+						break;
+					default:		//Invalid Input! Try again
+						System.out.println("Incorrect Card type! Try again!");
+						break;
 				}
-				
-			}catch(Exception e) {		//if there is an exception than catch it here and return an error code (preferably an easy to understand one)
+			}
+			catch(Exception e) {		//if there is an exception than catch it here and return an error code (preferably an easy to understand one)
 				System.out.println("Error 1!\nTry again! Please input \"1\" or \"2\"!");
 				scanner.next();
 				continue;
@@ -168,7 +167,8 @@ public class AutomaticTellerMachine {
 				withdraw = scanner.nextLong();
 				if (withdraw % 5 == 0 && withdraw > 0) {
 					Berechnung(withdraw);	//Amount is acceptable and the bills will be calculated.
-				}else {
+				}
+				else {
 					System.out.println("Your request was denied! Invalid withdrawal!\nTry again! Please input a valid amount!");
 					//Withdrawal was denied. It will ask for a new withdrawal amount until a correct amount was put in.
 				}
