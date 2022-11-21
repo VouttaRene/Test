@@ -21,12 +21,13 @@ public class Customer {
 		}
 		return pin;
 	}
-	//Create pinCodes for both Cards - triggerd in AutomaticTellerMachine
+	//Create pinCodes for both Cards - triggered in AutomaticTellerMachine
 	public void InitializePinCodes() {		
 		setPinCodeDebitCard(pinCode());
 		setPinCodeCreditCard(pinCode());
 	}
 	
+	//This method prints out all of the customer attributes
 	public void printOutAttributes() {
 		System.out.println(	"Your account detail:\n"
 							+ "Name:\t" + name
@@ -35,6 +36,22 @@ public class Customer {
 							+ "Geburtstag:\t" + birthDate
 							+ "Pin Giro:\t" + pinCodeDebitCard
 							+ "Pin Kedit:\t" + pinCodeCreditCard);
+	}
+	
+//Check dates
+	public bool CheckAge() {
+		//Check if birth date is correct
+		char[] birthDateCharArr = new char[birthDate.length()];
+		
+        for (int i = 0; i < birthDate.length(); i++) {
+            birthDateCharArr[i] = birthDate.charAt(i);
+        }
+        
+        int dayInt = Integer.parseInt(String.valueOf(birthDateCharArr[0]) + String.valueOf(birthDateCharArr[1]));
+        int monthInt = Integer.parseInt(String.valueOf(birthDateCharArr[3]) + String.valueOf(birthDateCharArr[4]));
+        int yearInt = Integer.parseInt(String.valueOf(birthDateCharArr[6]) + String.valueOf(birthDateCharArr[7]) + String.valueOf(birthDateCharArr[8]) + String.valueOf(birthDateCharArr[9]));
+        
+        if(yearInt )
 	}
 	
 //Getter and Setter
