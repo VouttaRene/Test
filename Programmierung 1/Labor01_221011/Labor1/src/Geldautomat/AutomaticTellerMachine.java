@@ -92,6 +92,9 @@ public class AutomaticTellerMachine {
 		//Initialize an array to store withdrawal amounts.
 		long[] withdrawals = new long[5];
 		
+		//Start greeting
+		greetingCustomer();
+		
 		//Call Method to ask For Card
 		AskForCard();
 		
@@ -124,6 +127,30 @@ public class AutomaticTellerMachine {
 		scanner.close();		//Scanner is closed so that no further input can be done
 	}
 	
+	
+	//This method handles the greeting of a customer
+	private static void greetingCustomer() {
+		
+		Customer customer = new Customer();
+		//Set name
+		System.out.println("Please input your full name:");
+		customer.setName(scanner.next());
+		//Set Birthday
+		System.out.println("Please input your birth date (dd.mm.yyyy):");
+		customer.setBirthDate(scanner.next());
+		//Set address
+		System.out.println("Please input your full address:");
+		customer.setAddress(scanner.next());
+		//Set mail
+		System.out.println("Please input your email:");
+		customer.setMail(scanner.next());
+		
+		//Generating PinCodes
+		customer.InitializePinCodes();
+		System.out.println("------------\nYour pin codes are generated.\n------------");
+		
+		customer.printOutAttributes();
+	}
 	//This method asks the user for the card type. Either Girocard or credit card are accepted.
 	private static void AskForCard() {
 		System.out.println("What medium do you want to use to withdraw money: Girocard (1) or credit card (2) ?");
@@ -182,7 +209,7 @@ public class AutomaticTellerMachine {
 		return withdraw;	
 	}
 
-	//This method does the calculation of the amount of bills.
+//This method does the calculation of the amount of bills.
 	//At last it will print out the amount of bills.
 	private static void Berechnung(long withdrawal) {
 		long fiveHundred = 0;
@@ -232,7 +259,7 @@ public class AutomaticTellerMachine {
 		System.out.println(five + " times 5 Euro bills\n------------");
 	}
 	
-	//The following methods are sorting the withdrawal array and return different value depending on what's ask for.
+//The following methods are sorting the withdrawal array and return different value depending on what's ask for.
 	//First Method: Return smallest value in array
 	private static long SmallSearch(long[] withdrawals) {
 		long smallestValue = withdrawals[0];	//Declare Variable to store smallest value which will be returned later. Initialize it with the first element of the array
