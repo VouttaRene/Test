@@ -39,7 +39,7 @@ public class Customer {
 	}
 	
 //Check dates
-	public bool CheckAge() {
+	public void CheckAge() {
 		//Check if birth date is correct
 		char[] birthDateCharArr = new char[birthDate.length()];
 		
@@ -51,7 +51,7 @@ public class Customer {
         int monthInt = Integer.parseInt(String.valueOf(birthDateCharArr[3]) + String.valueOf(birthDateCharArr[4]));
         int yearInt = Integer.parseInt(String.valueOf(birthDateCharArr[6]) + String.valueOf(birthDateCharArr[7]) + String.valueOf(birthDateCharArr[8]) + String.valueOf(birthDateCharArr[9]));
         
-        if(yearInt )
+        //if(yearInt )
 	}
 	
 //Getter and Setter
