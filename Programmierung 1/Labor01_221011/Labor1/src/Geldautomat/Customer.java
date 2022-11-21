@@ -29,29 +29,44 @@ public class Customer {
 	
 	//This method prints out all of the customer attributes
 	public void printOutAttributes() {
-		System.out.println(	"Your account detail:\n"
-							+ "Name:\t" + name
-							+ "Adresse:\t" + address							
-							+ "Email:\t" + mail
-							+ "Geburtstag:\t" + birthDate
-							+ "Pin Giro:\t" + pinCodeDebitCard
-							+ "Pin Kedit:\t" + pinCodeCreditCard);
+		System.out.println(	"Your account detail:"
+							+ "\nName:\t\t" + name
+							+ "\nAdresse:\t" + address							
+							+ "\nEmail:\t\t" + mail
+							+ "\nGeburtstag:\t" + birthDate
+							+ "\nPin Giro:\t" + pinCodeDebitCard
+							+ "\nPin Kedit:\t" + pinCodeCreditCard);
 	}
 	
 //Check dates
-	public void CheckAge() {
+	public Boolean CalculateAge(String dateToday) {
 		//Check if birth date is correct
 		char[] birthDateCharArr = new char[birthDate.length()];
-		
         for (int i = 0; i < birthDate.length(); i++) {
             birthDateCharArr[i] = birthDate.charAt(i);
         }
+        int birthDayInt = Integer.parseInt(String.valueOf(birthDateCharArr[0]) + String.valueOf(birthDateCharArr[1]));
+        int birthMonthInt = Integer.parseInt(String.valueOf(birthDateCharArr[3]) + String.valueOf(birthDateCharArr[4]));
+        int birthYearInt = Integer.parseInt(String.valueOf(birthDateCharArr[6]) + String.valueOf(birthDateCharArr[7]) + String.valueOf(birthDateCharArr[8]) + String.valueOf(birthDateCharArr[9]));
         
-        int dayInt = Integer.parseInt(String.valueOf(birthDateCharArr[0]) + String.valueOf(birthDateCharArr[1]));
-        int monthInt = Integer.parseInt(String.valueOf(birthDateCharArr[3]) + String.valueOf(birthDateCharArr[4]));
-        int yearInt = Integer.parseInt(String.valueOf(birthDateCharArr[6]) + String.valueOf(birthDateCharArr[7]) + String.valueOf(birthDateCharArr[8]) + String.valueOf(birthDateCharArr[9]));
+        //Today date
+        char[] todayCharArr = new char[dateToday.length()];
+        for (int i = 0; i < dateToday.length(); i++) {
+            todayCharArr[i] = dateToday.charAt(i);
+        }
+        int todayDayInt = Integer.parseInt(String.valueOf(todayCharArr[0]) + String.valueOf(todayCharArr[1]));
+        int todayMonthInt = Integer.parseInt(String.valueOf(todayCharArr[3]) + String.valueOf(todayCharArr[4]));
+        int todayYearInt = Integer.parseInt(String.valueOf(todayCharArr[6]) + String.valueOf(todayCharArr[7]) + String.valueOf(todayCharArr[8]) + String.valueOf(todayCharArr[9]));
         
-        //if(yearInt )
+        if(todayYearInt - birthYearInt > 18) {
+        	return true;
+        }else if(todayYearInt - birthYearInt == 18 && todayMonthInt > birthMonthInt) {
+        	return true;
+        }else if(todayYearInt - birthYearInt == 18 && todayMonthInt == birthMonthInt && todayDayInt >= birthDayInt) {
+        	return true;
+        }else {
+        	return false;
+        }
 	}
 	
 //Getter and Setter

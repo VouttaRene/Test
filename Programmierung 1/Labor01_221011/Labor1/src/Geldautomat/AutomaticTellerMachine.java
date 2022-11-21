@@ -89,21 +89,68 @@ public class AutomaticTellerMachine {
 	static Scanner scanner = new Scanner(System.in);
 	
 	public static void main (String[] args) {
-		//Initialize an array to store withdrawal amounts.
-		long[] withdrawals = new long[5];
+		
 		
 		//Start greeting
 		greetingCustomer();
 		
 		//Call Method to ask For Card
-		AskForCard();
+		//AskForCard();
 		
+		System.out.println("------------\nThanks for using our ATM.");
+		
+
+		
+		
+	}
+	
+	
+	//This method handles the greeting of a customer
+	private static void greetingCustomer() {
+		//Date of today
+		String dateToday = "21.11.2022";
+		
+		Customer customer = new Customer();
+		//Set name
+		System.out.println("Please input your full name:");
+		customer.setName(scanner.nextLine());
+		//Set Birthday
+		System.out.println("Please input your birth date (dd.mm.yyyy):");
+		customer.setBirthDate(scanner.nextLine());
+		//Set address
+		System.out.println("Please input your full address:");
+		customer.setAddress(scanner.nextLine());
+		//Set mail
+		System.out.println("Please input your email:");
+		customer.setMail(scanner.nextLine());
+
+		
+		boolean age = customer.CalculateAge(dateToday);
+		if(age) {
+			//Generating PinCodes
+			customer.InitializePinCodes();
+			System.out.println("------------\nYour pin codes are generated.\n------------");
+			
+			customer.printOutAttributes();
+			
+			handleATM();
+		}
+		else {
+			//WIP - Not old enough
+			System.out.println("Try later!");
+		}
+		System.out.println(age);
+	}
+	//This method handles the Request for the Card and withdrawal amount, depending on the age restriction
+	private static void handleATM() {
+		AskForCard();
+		//Initialize an array to store withdrawal amounts.
+		long[] withdrawals = new long[5];
 		//Ask for a withdrawal 5 times and store the amounts in an array
 		for(int i = 0; i < withdrawals.length; i++) {
 			System.out.print((i+1) + ". Withdrawal: ");
 			withdrawals[i] = WithdrawCalc();
 		}
-		
 		//Print out all withdrawals
 		System.out.println("The following amounts were withdrawn:");
 		for(long amount : withdrawals) {
@@ -122,34 +169,9 @@ public class AutomaticTellerMachine {
 			System.out.println("The second highest amount is: " + SearchSecondHigh(withdrawals));		//Print out second highest withdrawal amount
 		}
 		System.out.println("The average of all amounts is: " + CalcAverage(withdrawals));		//Print out the average of the array
-		System.out.println("------------\nThanks for using our ATM.");
+
 		
 		scanner.close();		//Scanner is closed so that no further input can be done
-	}
-	
-	
-	//This method handles the greeting of a customer
-	private static void greetingCustomer() {
-		
-		Customer customer = new Customer();
-		//Set name
-		System.out.println("Please input your full name:");
-		customer.setName(scanner.next());
-		//Set Birthday
-		System.out.println("Please input your birth date (dd.mm.yyyy):");
-		customer.setBirthDate(scanner.next());
-		//Set address
-		System.out.println("Please input your full address:");
-		customer.setAddress(scanner.next());
-		//Set mail
-		System.out.println("Please input your email:");
-		customer.setMail(scanner.next());
-		
-		//Generating PinCodes
-		customer.InitializePinCodes();
-		System.out.println("------------\nYour pin codes are generated.\n------------");
-		
-		customer.printOutAttributes();
 	}
 	//This method asks the user for the card type. Either Girocard or credit card are accepted.
 	private static void AskForCard() {
