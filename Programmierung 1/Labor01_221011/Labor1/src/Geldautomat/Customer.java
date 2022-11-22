@@ -1,5 +1,7 @@
 package Geldautomat;
 
+import java.util.Scanner;
+
 public class Customer {
 	
 	//Attributes of Customer
@@ -39,34 +41,86 @@ public class Customer {
 	}
 	
 //Check dates
-	public Boolean CalculateAge(String dateToday) {
-		//Check if birth date is correct
-		char[] birthDateCharArr = new char[birthDate.length()];
-        for (int i = 0; i < birthDate.length(); i++) {
-            birthDateCharArr[i] = birthDate.charAt(i);
-        }
-        int birthDayInt = Integer.parseInt(String.valueOf(birthDateCharArr[0]) + String.valueOf(birthDateCharArr[1]));
-        int birthMonthInt = Integer.parseInt(String.valueOf(birthDateCharArr[3]) + String.valueOf(birthDateCharArr[4]));
-        int birthYearInt = Integer.parseInt(String.valueOf(birthDateCharArr[6]) + String.valueOf(birthDateCharArr[7]) + String.valueOf(birthDateCharArr[8]) + String.valueOf(birthDateCharArr[9]));
-        
-        //Today date
-        char[] todayCharArr = new char[dateToday.length()];
-        for (int i = 0; i < dateToday.length(); i++) {
-            todayCharArr[i] = dateToday.charAt(i);
-        }
-        int todayDayInt = Integer.parseInt(String.valueOf(todayCharArr[0]) + String.valueOf(todayCharArr[1]));
-        int todayMonthInt = Integer.parseInt(String.valueOf(todayCharArr[3]) + String.valueOf(todayCharArr[4]));
-        int todayYearInt = Integer.parseInt(String.valueOf(todayCharArr[6]) + String.valueOf(todayCharArr[7]) + String.valueOf(todayCharArr[8]) + String.valueOf(todayCharArr[9]));
-        
-        if(todayYearInt - birthYearInt > 18) {
-        	return true;
-        }else if(todayYearInt - birthYearInt == 18 && todayMonthInt > birthMonthInt) {
-        	return true;
-        }else if(todayYearInt - birthYearInt == 18 && todayMonthInt == birthMonthInt && todayDayInt >= birthDayInt) {
-        	return true;
-        }else {
-        	return false;
-        }
+	public boolean calculateAge(int birthDay, int birthMonth, int birthYear, String dateToday) {
+		//Get the day, month and year as integers using replace and useDelimiter
+		String today = dateToday.replace(".", "-");
+		Scanner scannerToday = new Scanner(today).useDelimiter("-");
+		int day = scannerToday.nextInt();
+		int month = scannerToday.nextInt();
+		int year = scannerToday.nextInt();
+		scannerToday.close();
+		
+        //Check if today and birthday are actual dates
+		boolean correctBirthDayDate = CheckDateFormat(birthDay, birthMonth, birthYear);
+		boolean correctTodayDate = CheckDateFormat(day, month, year);
+		if(correctBirthDayDate && correctTodayDate) {
+			//Check if birthday is before today
+			boolean correctBirthDay = CheckDate(birthDay, birthMonth, birthYear, day, month, year);
+			if(correctBirthDay) {
+				//Check if customer is older than 18
+		        if(year - birthYear > 18) {
+		        	return true;
+		        }else if(year - birthYear == 18 && month > birthMonth) {
+		        	return true;
+		        }else if(year - birthYear == 18 && month == birthMonth && day >= birthDay) {
+		        	return true;
+		        }else {
+		        	return false;
+		        }
+			}else {
+				return false;
+			}
+		}else {
+			return false;
+		}
+	}
+	
+	private boolean CheckDateFormat(int day, int month, int year) {
+		boolean correctDateFormat = false;
+		
+		//Check if year is correct format
+		if(1900 < year && year <= 2022) {
+			if( month > 0 && month < 13) {
+				switch(month) {
+				case 2:
+					if(day > 0 && day <= 28)
+						correctDateFormat = true;
+					break;
+				case 4:
+				case 6:
+				case 9:
+				case 11:
+					if(day > 0 && day <= 30)
+						correctDateFormat = true;
+					break;
+				default:
+					if(day > 0 && day <= 31)
+						correctDateFormat = true;
+					break;
+				}
+			}
+		}
+		
+		if(year%4 == 0 && month == 2 && day == 29)
+			correctDateFormat = true;
+		
+		return correctDateFormat;
+	}
+	
+	private boolean CheckDate(int birthYear, int birthMonth, int birthDay, int todayYear, int todayMonth, int todayDay) {
+		boolean correctDate = false;
+		
+		//Check if DateFormat is correct
+		
+		//Check if birthday is before today
+		if(birthYear < todayYear)
+			correctDate = true;
+		if(birthYear == todayYear && birthMonth < todayMonth)
+			correctDate = true;
+		if(birthYear == todayYear && birthMonth == todayMonth && birthDay < todayDay)
+			correctDate = true;
+		
+		return correctDate;
 	}
 	
 //Getter and Setter

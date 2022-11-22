@@ -23,7 +23,7 @@ public class Array {
 		
 		
 //		String date = "21.11.2022";
-//		Scanner scanner = new Scanner(System.in);
+		Scanner scanner = new Scanner(System.in);
 //		
 //		String birthdate = scanner.next();
 //		
@@ -33,9 +33,9 @@ public class Array {
 //            birthDateCharArr[i] = birthdate.charAt(i);
 //        }
 //        
-        int dayInt = Integer.parseInt(String.valueOf(birthDateCharArr[0]) + String.valueOf(birthDateCharArr[1]));
-        int monthInt = Integer.parseInt(String.valueOf(birthDateCharArr[3]) + String.valueOf(birthDateCharArr[4]));
-        int yearInt = Integer.parseInt(String.valueOf(birthDateCharArr[6]) + String.valueOf(birthDateCharArr[7]) + String.valueOf(birthDateCharArr[8]) + String.valueOf(birthDateCharArr[9]));
+//        int dayInt = Integer.parseInt(String.valueOf(birthDateCharArr[0]) + String.valueOf(birthDateCharArr[1]));
+//        int monthInt = Integer.parseInt(String.valueOf(birthDateCharArr[3]) + String.valueOf(birthDateCharArr[4]));
+//        int yearInt = Integer.parseInt(String.valueOf(birthDateCharArr[6]) + String.valueOf(birthDateCharArr[7]) + String.valueOf(birthDateCharArr[8]) + String.valueOf(birthDateCharArr[9]));
 ////        for(char dates : birthDateCharArr) {
 ////        	System.out.print(dates);
 ////        }
@@ -45,17 +45,44 @@ public class Array {
 //        System.out.print(monthInt + " ");
 //        System.out.print(yearInt);
 		
-		for(int i = 0; i < 10000000; i++) {
-			int random = (int)Math.random()*10;
-			if(random >= 10) {
-				System.out.println("True");
-			}
-		}
+//		for(int i = 0; i < 10000000; i++) {
+//			int random = (int)Math.random()*10;
+//			if(random >= 10) {
+//				System.out.println("True");
+//			}
+//		}
+//		
+//		System.out.println("End!");
+//		
+//		scanner.next();
+//		int day = scanner.nextInt();
+//		int month = scanner.nextInt();
+//		int year = scanner.nextInt();
+//		
+//		System.out.println(day + " " + month + " " + year);
 		
-		System.out.println("End!");
 		
+		String inputs = scanner.nextLine();
+//		Scanner s = new Scanner(input).useDelimiter(".");
+//		System.out.println(s.nextInt());
+//		System.out.println(s.nextInt());
+//		System.out.println(s.nextInt());
 		
-		
+//		 String inputs = "1.2.red.blue";
+
+		 // \\s* means 0 or more repetitions of any whitespace character 
+		 // fish is the pattern to find
+		 String input = inputs.replace(".","-");
+		 Scanner s = new Scanner(input).useDelimiter("-");
+
+		 System.out.println(s.nextInt());   // prints: 1
+		 System.out.println(s.nextInt());   // prints: 2
+		 System.out.println(s.nextInt());      // prints: red
+//		 System.out.println(s.next());      // prints: blue
+
+		 // don't forget to close the scanner!!
+		 s.close();
+		 scanner.close();
 	}
 
 }

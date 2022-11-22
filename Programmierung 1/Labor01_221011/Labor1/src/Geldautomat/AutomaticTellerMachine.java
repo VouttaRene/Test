@@ -89,19 +89,10 @@ public class AutomaticTellerMachine {
 	static Scanner scanner = new Scanner(System.in);
 	
 	public static void main (String[] args) {
-		
-		
 		//Start greeting
 		greetingCustomer();
 		
-		//Call Method to ask For Card
-		//AskForCard();
-		
 		System.out.println("------------\nThanks for using our ATM.");
-		
-
-		
-		
 	}
 	
 	
@@ -116,7 +107,11 @@ public class AutomaticTellerMachine {
 		customer.setName(scanner.nextLine());
 		//Set Birthday
 		System.out.println("Please input your birth date (dd.mm.yyyy):");
-		customer.setBirthDate(scanner.nextLine());
+		String birthdayTemp = scanner.nextLine();
+		String birthday = birthdayTemp.replace(".", "-"); 	//Replace . with - to use the delimiter
+		Scanner scannerBirthday = new Scanner(birthday);
+		boolean age = customer.calculateAge(scannerBirthday.nextInt(), scannerBirthday.nextInt(), scannerBirthday.nextInt(), dateToday);
+		scannerBirthday.close();
 		//Set address
 		System.out.println("Please input your full address:");
 		customer.setAddress(scanner.nextLine());
@@ -124,8 +119,6 @@ public class AutomaticTellerMachine {
 		System.out.println("Please input your email:");
 		customer.setMail(scanner.nextLine());
 
-		
-		boolean age = customer.CalculateAge(dateToday);
 		if(age) {
 			//Generating PinCodes
 			customer.InitializePinCodes();
