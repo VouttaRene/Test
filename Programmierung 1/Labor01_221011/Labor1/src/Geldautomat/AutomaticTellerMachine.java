@@ -110,6 +110,7 @@
 package Geldautomat;
 //Importing java.util.Scanner to get import using the console
 import java.util.Scanner;
+import java.time.*;
 
 /*This class simulates a virtual ATM. We only have 500, 200 , 100, 50, 20, 10 and 5 Euro 
 *bills. A withdrawal request that does not fit this criteria should be denied.
@@ -131,7 +132,7 @@ public class AutomaticTellerMachine {
 	//This method handles the greeting of a customer, if the customer is of legal age he can withdraw money
 	private static void greetingCustomer() {
 		//Date of today
-		String dateToday = "23 11 2022";		//Format differs because of later code
+		String dateToday = LocalDate.now().toString();		//get actual date and convert it to string - Format: YYYY-MM-DD
 		
 		//Create new Customer object
 		Customer customer = new Customer();
@@ -168,19 +169,18 @@ public class AutomaticTellerMachine {
 		int birthdayDay = scannerBirthday.nextInt();
 		int birthdayMonth = scannerBirthday.nextInt();
 		int birthdayYear = scannerBirthday.nextInt();
-		//Splitting the date of today into 3 different integer (day, month, year) 
-		Scanner scannerToday = new Scanner(dateToday);
-		int todayDay = scannerToday.nextInt();
-		int todayMonth = scannerToday.nextInt();
+		//Splitting the date of today into 3 different integer (day, month, year)
+		String date = dateToday.replace("-", " ");		//slight changes because of Format: YYYY-MM-DD
+		Scanner scannerToday = new Scanner(date);
 		int todayYear = scannerToday.nextInt();
+		int todayMonth = scannerToday.nextInt();
+		int todayDay = scannerToday.nextInt();
 		//Closing both scanner
 		scannerBirthday.close();
 		scannerToday.close();
 		
 		//Calculate age
 		customer.setAge(customer.calculateAge(birthdayDay, birthdayMonth, birthdayYear, todayDay, todayMonth, todayYear));
-		
-
 
 		//Control the age, if customer is an adult(18+) than the account will be created. If customer is a minor(<18) than access will be denied.  
 		if(customer.getAge() >= 18) {
@@ -284,7 +284,7 @@ public class AutomaticTellerMachine {
 	}
 	
 	//This method asks for the withdrawal amount and checks if the amount is acceptable 
-	private static long withdrawCalc() {		
+	private static long withdrawCalc() {
 		System.out.println("How much do you want to withdraw?");
 		long withdraw = 0L;
 		
@@ -446,12 +446,12 @@ public class AutomaticTellerMachine {
 	}
 	private static boolean checkPinCode(int cardType, Customer customer) {
 		boolean correctPin = false;
-		Scanner scannerPin = new Scanner(System.in);
+		//Scanner scannerPin = new Scanner(System.in);
 		//Show selected card and ask for pin
 		//Compare Pin for Giro Card
 		if(cardType == 1) {
 			System.out.println("You have selected Girocard. Please input your pin Code:");
-			String pinCode = scannerPin.next();	//gets pin input from scanner
+			String pinCode = scanner.next();	//gets pin input from scanner
 			if(pinCode.equals(customer.getPinCodeDebitCard())) {	//Compare input pin and actual pin if true go on
 				correctPin = true;	
 				System.out.println("The pin is correct\n------------");
@@ -463,7 +463,7 @@ public class AutomaticTellerMachine {
 		//Compare Pin for Credit Card
 		if(cardType == 2) {
 			System.out.println("You have selected Creditcard. Please input your pin Code:");
-			String pinCode = scannerPin.next();	//gets pin input from scanner
+			String pinCode = scanner.next();	//gets pin input from scanner
 			if(pinCode.equals(customer.getPinCodeCreditCard())) {	//Compare input pin and actual pin if true go on
 				correctPin = true;
 				System.out.println("The pin is correct\n------------");
@@ -473,7 +473,7 @@ public class AutomaticTellerMachine {
 			}	
 		}
 		//Close Scanner and return correctPin Parameter
-		scannerPin.close();
+		//scannerPin.close();
 		return correctPin;
 	}
 	//Create Pin codes and initialize them
