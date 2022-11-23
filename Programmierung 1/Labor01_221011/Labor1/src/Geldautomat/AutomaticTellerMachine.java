@@ -96,53 +96,107 @@ public class AutomaticTellerMachine {
 	}
 	
 	
-	//This method handles the greeting of a customer
+	//This method handles the greeting of a customer, if the customer is of legal age he can withdraw money
 	private static void greetingCustomer() {
 		//Date of today
-		String dateToday = "21.11.2022";
+		String dateToday = "23 11 2022";		//Format differs because of later code
 		
+		//Create new Customer object
 		Customer customer = new Customer();
+//Set customer data
 		//Set name
 		System.out.println("Please input your full name:");
 		customer.setName(scanner.nextLine());
-		//Set Birthday
+		
+		//Set Birthday and check input(WIP)
+		boolean correctDateFormat = false;
+		String birthdayTemp = "";
 		System.out.println("Please input your birth date (dd.mm.yyyy):");
-		String birthdayTemp = scanner.nextLine();
-		String birthday = birthdayTemp.replace(".", "-"); 	//Replace . with - to use the delimiter
-		Scanner scannerBirthday = new Scanner(birthday);
-		boolean age = customer.calculateAge(scannerBirthday.nextInt(), scannerBirthday.nextInt(), scannerBirthday.nextInt(), dateToday);
-		scannerBirthday.close();
+		while(!correctDateFormat) {			
+			birthdayTemp = scanner.nextLine();
+			if(birthdayTemp.length() == 10)
+				correctDateFormat = checkDateFormat(birthdayTemp);
+			else
+				System.out.println("Invalid input!\nPlease input your birth date (dd.mm.yyyy) correctly:");
+		}
+		customer.setBirthDate(birthdayTemp);
+		
 		//Set address
 		System.out.println("Please input your full address:");
 		customer.setAddress(scanner.nextLine());
+		
 		//Set mail
 		System.out.println("Please input your email:");
 		customer.setMail(scanner.nextLine());
 
-		if(age) {
+//Check for age restrictions
+		//Splitting the birthday into 3 different integer (day, month, year) 
+		String birthday = birthdayTemp.replace(".", " "); 	//Replace "." with " " to make it easier to read using nextInt()
+		Scanner scannerBirthday = new Scanner(birthday);
+		int birthdayDay = scannerBirthday.nextInt();
+		int birthdayMonth = scannerBirthday.nextInt();
+		int birthdayYear = scannerBirthday.nextInt();
+		//Splitting the date of today into 3 different integer (day, month, year) 
+		Scanner scannerToday = new Scanner(dateToday);
+		int todayDay = scannerToday.nextInt();
+		int todayMonth = scannerToday.nextInt();
+		int todayYear = scannerToday.nextInt();
+		//Closing both scanner
+		scannerBirthday.close();
+		scannerToday.close();
+		
+		//Calculate age
+		int age = customer.calculateAge(birthdayDay, birthdayMonth, birthdayYear, todayDay, todayMonth, todayYear);
+		
+
+
+		//Control the age, if customer is an adult(18+) than the account will be created. If customer is a minor(<18) than access will be denied.  
+		if(age >= 18) {
 			//Generating PinCodes
-			customer.InitializePinCodes();
+			InitializePinCodes(customer);
 			System.out.println("------------\nYour pin codes are generated.\n------------");
 			
 			customer.printOutAttributes();
 			
-			handleATM();
+			boolean withdrawProposal = false;
+			while(!withdrawProposal) {
+				System.out.println("------------\nYour Bank account has been succesfully created.\n------------\nDo you want to withdraw money (yes [1] or no [2])");
+				int withdraw = scanner.nextInt();
+				
+				switch(withdraw) {
+				case 1:
+					withdrawProposal = true;
+					int cardType = askForCard();
+					checkPinCode(cardType, customer);
+					handleATM();
+					break;
+				case 2:
+					withdrawProposal = true;
+					break;
+				default:
+					System.out.println("Error! Invalid Input! Try again!\nDo you want to withdraw money (yes [1] or no [2])");
+				}
+			}
+			
+			
+			
+			//handleATM();
 		}
 		else {
 			//WIP - Not old enough
-			System.out.println("Try later!");
+			System.out.println("------------\nYou are not old enough to create a bank account or you have made an incorrect input. Please try again!");
 		}
-		System.out.println(age);
+		//System.out.println(age);
 	}
+	
 	//This method handles the Request for the Card and withdrawal amount, depending on the age restriction
 	private static void handleATM() {
-		AskForCard();
 		//Initialize an array to store withdrawal amounts.
 		long[] withdrawals = new long[5];
 		//Ask for a withdrawal 5 times and store the amounts in an array
 		for(int i = 0; i < withdrawals.length; i++) {
 			System.out.print((i+1) + ". Withdrawal: ");
-			withdrawals[i] = WithdrawCalc();
+			withdrawals[i] = withdrawCalc();
 		}
 		//Print out all withdrawals
 		System.out.println("The following amounts were withdrawn:");
@@ -154,35 +208,33 @@ public class AutomaticTellerMachine {
 		System.out.println("------------\nYou withdrew " + withdrawals.length + " amounts.\n------------");
 		
 		//Call Search methods and print out the results
-		System.out.println("The lowest amount is: " + SmallSearch(withdrawals));		//Print out smallest Value of withdrawal amounts
-		if(SearchSecondHigh(withdrawals) == 0) {
+		System.out.println("The lowest amount is: " + smallSearch(withdrawals));		//Print out smallest Value of withdrawal amounts
+		if(searchSecondHigh(withdrawals) == 0) {
 			System.out.println("Alle Werte sind gleich.");		//All amounts are equal to each other. That's why there is no value for secondHigh
 		}
 		else {
-			System.out.println("The second highest amount is: " + SearchSecondHigh(withdrawals));		//Print out second highest withdrawal amount
+			System.out.println("The second highest amount is: " + searchSecondHigh(withdrawals));		//Print out second highest withdrawal amount
 		}
-		System.out.println("The average of all amounts is: " + CalcAverage(withdrawals));		//Print out the average of the array
+		System.out.println("The average of all amounts is: " + calcAverage(withdrawals));		//Print out the average of the array
 
 		
 		scanner.close();		//Scanner is closed so that no further input can be done
 	}
 	//This method asks the user for the card type. Either Girocard or credit card are accepted.
-	private static void AskForCard() {
+	private static int askForCard() {
+		int cardType = 0;
 		System.out.println("What medium do you want to use to withdraw money: Girocard (1) or credit card (2) ?");
 		
 		boolean validCardType = false;		//Flag for accepted/valid card.
-		String card = "none";
 		
 		while(!validCardType) {
 			try {		//try to do user input if not catch exception
-				int cardType = scanner.nextInt();
+				cardType = scanner.nextInt();
 				switch(cardType) {
 					case 1:			//Valid Input: Case Girocard
-						card = "Girocard";
 						validCardType = true;
 						break;
 					case 2:			//Valid Input: Case Credit Card
-						card = "credit card";
 						validCardType = true;
 						break;
 					default:		//Invalid Input! Try again
@@ -196,11 +248,11 @@ public class AutomaticTellerMachine {
 				continue;
 			}
 		}
-		System.out.println("You have selected: " + card + ".");
+		return cardType;
 	}
 	
 	//This method asks for the withdrawal amount and checks if the amount is acceptable 
-	private static long WithdrawCalc() {		
+	private static long withdrawCalc() {		
 		System.out.println("How much do you want to withdraw?");
 		long withdraw = 0L;
 		
@@ -208,7 +260,7 @@ public class AutomaticTellerMachine {
 			try {		//try to do user input if not catch exception
 				withdraw = scanner.nextLong();
 				if (withdraw % 5 == 0 && withdraw > 0) {
-					Berechnung(withdraw);	//Amount is acceptable and the bills will be calculated.
+					berechnung(withdraw);	//Amount is acceptable and the bills will be calculated.
 				}
 				else {
 					System.out.println("Your request was denied! Invalid withdrawal!\nTry again! Please input a valid amount!");
@@ -226,7 +278,7 @@ public class AutomaticTellerMachine {
 
 //This method does the calculation of the amount of bills.
 	//At last it will print out the amount of bills.
-	private static void Berechnung(long withdrawal) {
+	private static void berechnung(long withdrawal) {
 		long fiveHundred = 0;
 		long twoHundred = 0;
 		long oneHundred = 0;
@@ -276,7 +328,7 @@ public class AutomaticTellerMachine {
 	
 //The following methods are sorting the withdrawal array and return different value depending on what's ask for.
 	//First Method: Return smallest value in array
-	private static long SmallSearch(long[] withdrawals) {
+	private static long smallSearch(long[] withdrawals) {
 		long smallestValue = withdrawals[0];	//Declare Variable to store smallest value which will be returned later. Initialize it with the first element of the array
 		for(int i = 1; i < withdrawals.length; i++) {
 			if(smallestValue > withdrawals[i]) {		
@@ -287,7 +339,7 @@ public class AutomaticTellerMachine {
 	}
 	
 	//Second Method: Return second highest value in array
-	private static long SearchSecondHigh(long[] withdrawals) {
+	private static long searchSecondHigh(long[] withdrawals) {
 		long highest = withdrawals[0];	//Declare Variable to store smallest value which will be returned later. Initialize it with the first element of the array
 		long secondHighest = 0;
 		
@@ -306,7 +358,7 @@ public class AutomaticTellerMachine {
 	}
 	
 	//Third Method: Return the Average of an array
-	private static long CalcAverage(long[] withdrawals) {
+	private static long calcAverage(long[] withdrawals) {
 		long average = -1;		//Declare Variable to store smallest value which will be returned later. Initialize it with -1 to be sure it can be returned and a mistake will be easily seen.
 		long sumOfArray = 0;	
 		
@@ -319,4 +371,88 @@ public class AutomaticTellerMachine {
 		
 		return average;
 	}
+	private static boolean checkDateFormat(String dateTemp) {
+		boolean correctDateFormat = false;
+		
+		//Splitting the birthday into 3 different integer (day, month, year) 
+		String date = dateTemp.replace(".", " "); 	//Replace "." with " " to make it easier to read using nextInt()
+		Scanner scannerDate = new Scanner(date);
+		int day = scannerDate.nextInt();
+		int month = scannerDate.nextInt();
+		int year = scannerDate.nextInt();
+		
+		//Check if year is correct format
+		if(1900 < year && year <= 2022) {
+			if( month > 0 && month < 13) {
+				switch(month) {
+				case 2:
+					if(day > 0 && day <= 28)
+						correctDateFormat = true;
+					break;
+				case 4:
+				case 6:
+				case 9:
+				case 11:
+					if(day > 0 && day <= 30)
+						correctDateFormat = true;
+					break;
+				default:
+					if(day > 0 && day <= 31)
+						correctDateFormat = true;
+					break;
+				}
+			}
+		}
+		
+		if(year%4 == 0 && month == 2 && day == 29)
+			correctDateFormat = true;
+		scannerDate.close();
+		return correctDateFormat;
+	}
+	private static boolean checkPinCode(int cardType, Customer customer) {
+		boolean correctPin = false;
+		Scanner scannerPin = new Scanner(System.in);
+		//Show selected card and ask for pin
+		if(cardType == 1) {
+			System.out.println("You have selected Girocard. Please input your pin Code:");
+			String pinCode = scannerPin.next();
+			if(pinCode.equals(customer.getPinCodeDebitCard())) {
+				correctPin = true;
+				System.out.println("The pin is correct\n------------");
+			}else {
+				System.out.println("Invalid Pin! Try again!");
+				checkPinCode(cardType, customer);
+			}
+		}
+		if(cardType == 2) {
+			System.out.println("You have selected Creditcard. Please input your pin Code:");
+			String pinCode = scannerPin.next();
+			if(pinCode.equals(customer.getPinCodeCreditCard())) {
+				correctPin = true;
+				System.out.println("The pin is correct\n------------");
+			}else {
+				System.out.println("Invalid Pin! Try again!");
+				checkPinCode(cardType, customer);
+			}	
+		}
+		scannerPin.close();
+		return correctPin;
+	}
+	//Create Pin codes and initialize them
+		//Create Pincode
+		private static String pinCode() {
+			String pin = "";
+			int random;
+			for(int i = 0; i < 4; i++) {
+				random = (int)(Math.random() * 10);
+				pin += random;
+			}
+			return pin;
+		}
+		//Create pinCodes for both Cards - triggered in AutomaticTellerMachine
+		private static void InitializePinCodes(Customer customer) {		
+			customer.setPinCodeDebitCard(pinCode());
+			customer.setPinCodeCreditCard(pinCode());
+		}
 }
+
