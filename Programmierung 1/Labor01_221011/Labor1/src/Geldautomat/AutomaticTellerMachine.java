@@ -199,8 +199,8 @@ public class AutomaticTellerMachine {
 				case 1:
 					withdrawProposal = true;
 					int cardType = askForCard();
-					checkPinCode(cardType, customer);
-					handleATM();
+					if(checkPinCode(cardType, customer))
+						handleATM();
 					break;
 				case 2:
 					withdrawProposal = true;
@@ -446,31 +446,39 @@ public class AutomaticTellerMachine {
 	}
 	private static boolean checkPinCode(int cardType, Customer customer) {
 		boolean correctPin = false;
-		//Scanner scannerPin = new Scanner(System.in);
+		int counter = 3;
 		//Show selected card and ask for pin
 		//Compare Pin for Giro Card
-		if(cardType == 1) {
-			System.out.println("You have selected Girocard. Please input your pin Code:");
-			String pinCode = scanner.next();	//gets pin input from scanner
-			if(pinCode.equals(customer.getPinCodeDebitCard())) {	//Compare input pin and actual pin if true go on
-				correctPin = true;	
-				System.out.println("The pin is correct\n------------");
-			}else {		//if false, ask again
-				System.out.println("Invalid Pin! Try again!");
-				checkPinCode(cardType, customer);
+		while(counter > 0) {
+			if(cardType == 1) {
+				System.out.println("You have selected Girocard. Please input your pin Code:");
+				String pinCode = scanner.next();	//gets pin input from scanner
+				if(pinCode.equals(customer.getPinCodeDebitCard())) {	//Compare input pin and actual pin if true go on
+					correctPin = true;	
+					System.out.println("The pin is correct\n------------");
+				}else {		//if false, ask again
+					if(counter==1)
+						System.out.println("Invalid Pin. You used all your tries!");
+					else
+						System.out.println("Invalid Pin! Try again!");
+					counter--;
+				}
 			}
-		}
-		//Compare Pin for Credit Card
-		if(cardType == 2) {
-			System.out.println("You have selected Creditcard. Please input your pin Code:");
-			String pinCode = scanner.next();	//gets pin input from scanner
-			if(pinCode.equals(customer.getPinCodeCreditCard())) {	//Compare input pin and actual pin if true go on
-				correctPin = true;
-				System.out.println("The pin is correct\n------------");
-			}else {		//if false, ask again
-				System.out.println("Invalid Pin! Try again!");
-				checkPinCode(cardType, customer);
-			}	
+			//Compare Pin for Credit Card
+			if(cardType == 2) {
+				System.out.println("You have selected Creditcard. Please input your pin Code:");
+				String pinCode = scanner.next();	//gets pin input from scanner
+				if(pinCode.equals(customer.getPinCodeCreditCard())) {	//Compare input pin and actual pin if true go on
+					correctPin = true;
+					System.out.println("The pin is correct\n------------");
+				}else {		//if false, ask again
+					if(counter==1)
+						System.out.println("Invalid Pin. You used all your tries!");
+					else
+						System.out.println("Invalid Pin! Try again!");
+					counter--;
+				}	
+			}
 		}
 		//Close Scanner and return correctPin Parameter
 		//scannerPin.close();
