@@ -73,7 +73,39 @@
  * sondern implementieren Sie dies selbst mit Hilfe Schleifen und Bedingungen.
  * • Implementieren Sie eine Methode, die den Mittelwert aus den fünf Geldbeträgen des Arrays bestimmt.
  * 
+ * 		3. Labor
  * 
+ * Ziele: 
+ * Sie entwickeln das Programm des virtuellen Geldautomaten weiter, sodass dieser Kundendaten aufnehmen 
+ * und verarbeiten kann, u.a. das Alter eines Kunden bestimmen oder Pincodes generieren kann. Inhaltliche 
+ * Schwerpunkte sind objektorientierte Programmierung, insbesondere Klassen, Konstruktoren, Objekte sowie 
+ * Information Hiding.
+ * 
+ * Durchführung: 
+ * Sie bearbeiten in Einzelarbeit die Aufgabe des dritten Labors in einer Entwicklungsumgebung
+ * Ihrer Wahl. Sie lösen die Aufgabenstellung und erläutern Ihren Quellcode beim Tutor, um das Testat zu erhalten. 
+ * Anschließend laden Sie die Lösung in Form Ihres Projektverzeichnisses als Zip-Archiv in den dafür vorgesehenen 
+ * Ordner in StudIP. Sollten Sie das Testat zum Abgabetermin nicht fertigstellen oder bestehen können, so besteht 
+ * in der darauffolgenden Woche die Möglichkeit eines Wiederholungstermins.
+ * 
+ * Aufgabe:
+ * • Implementieren Sie eine neue Klasse für Kunden des Geldautomaten mit dem Namen Customer. 
+ * Erstellen Sie dafür eine neue Java-Datei. Mit Hilfe dieser Klasse sollen später Objekte in der Klasse 
+ * AutomaticTellerMachine erzeugt werden können. Ein Customer soll über folgende Eigenschaften verfügen, die nur 
+ * für Objekte der eigenen Klasse zugreifbar sein dürfen: Name, Adresse, Mailadresse, Alter, Pincode der Girocard 
+ * und Pincode der Kreditkarte. Denken Sie bei der Implementierung der Klasse an das Information Hiding Prinzip. 
+ * Die Klasse Customer soll außerdem über eine Methode zur Berechnung des Alters aus dem Geburtsdatum eines Kunden
+ * verfügen.
+ * • Ergänzen Sie die Klasse AutomaticTellerMachine durch eine Methode, in der über die Konsoleneingabe Name, 
+ * Adresse, Mailadresse und das Geburtsdatum erfragt werden. Implementieren Sie außerdem eine Methode, die zufällige, 
+ * vierstellige Pincodes (ganzzahlig, z.B. 1234) erzeugt. Weisen Sie anschließend Name, Adresse, Mailadresse, 
+ * Alter (berechnet in der Customer Klasse) und die Pincodes für Girocard und Kreditkarte einem Customer Objekt zu und 
+ * geben Sie alles mit Hilfe des erzeugten Objektes auf der Konsole aus. Beachten Sie, dass dies nur durchgeführt werden 
+ * darf, falls das Alter des Kunden größer oder gleich 18 ist. Ist dies nicht der Fall, so werden dem Objekt keine Werte 
+ * zugewiesen oder auf der Konsole ausgegeben, da der Kunde zu jung für das Erstellen eines „Accounts“ wäre.
+ * • Ergänzen Sie die Methode zur Abfrage des Mediums (Girocard oder Kreditkarte) durch eine Abfrage des jeweiligen Pincodes,
+ * welcher vorher zufällig generiert wurde. Wird der Pincode dreimal falsch eingegeben, so soll kein Geld mehr abgehoben werden
+ * können.
  */
 package Geldautomat;
 //Importing java.util.Scanner to get import using the console
@@ -146,12 +178,12 @@ public class AutomaticTellerMachine {
 		scannerToday.close();
 		
 		//Calculate age
-		int age = customer.calculateAge(birthdayDay, birthdayMonth, birthdayYear, todayDay, todayMonth, todayYear);
+		customer.setAge(customer.calculateAge(birthdayDay, birthdayMonth, birthdayYear, todayDay, todayMonth, todayYear));
 		
 
 
 		//Control the age, if customer is an adult(18+) than the account will be created. If customer is a minor(<18) than access will be denied.  
-		if(age >= 18) {
+		if(customer.getAge() >= 18) {
 			//Generating PinCodes
 			InitializePinCodes(customer);
 			System.out.println("------------\nYour pin codes are generated.\n------------");
@@ -382,30 +414,33 @@ public class AutomaticTellerMachine {
 		int year = scannerDate.nextInt();
 		
 		//Check if year is correct format
-		if(1900 < year && year <= 2022) {
-			if( month > 0 && month < 13) {
+		if(1900 < year && year <= 2022) {		//Date needs to be between 1900 and 2022
+			if( month > 0 && month < 13) {		//Mont can not be less than 1 or more than 12
 				switch(month) {
 				case 2:
-					if(day > 0 && day <= 28)
+					if(day > 0 && day <= 28)	//Day can not exceed 28 when month is 2 (february)
 						correctDateFormat = true;
 					break;
 				case 4:
 				case 6:
 				case 9:
 				case 11:
-					if(day > 0 && day <= 30)
+					if(day > 0 && day <= 30)	//Day can not exceed 30 for month 4,6,9,11
 						correctDateFormat = true;
 					break;
 				default:
-					if(day > 0 && day <= 31)
+					if(day > 0 && day <= 31)	//Every other month the day can not exceed 31
 						correctDateFormat = true;
 					break;
 				}
 			}
 		}
 		
-		if(year%4 == 0 && month == 2 && day == 29)
+		//This handles the rare occurence of a leap year
+		if(year%4 == 0 && month == 2 && day == 29)		//year needs to be mod4==0, month == 2 and day == 29 -> than the date is correct as well
 			correctDateFormat = true;
+		
+		//Close scanner and return correctDateFormat Parameter
 		scannerDate.close();
 		return correctDateFormat;
 	}
@@ -413,46 +448,49 @@ public class AutomaticTellerMachine {
 		boolean correctPin = false;
 		Scanner scannerPin = new Scanner(System.in);
 		//Show selected card and ask for pin
+		//Compare Pin for Giro Card
 		if(cardType == 1) {
 			System.out.println("You have selected Girocard. Please input your pin Code:");
-			String pinCode = scannerPin.next();
-			if(pinCode.equals(customer.getPinCodeDebitCard())) {
-				correctPin = true;
+			String pinCode = scannerPin.next();	//gets pin input from scanner
+			if(pinCode.equals(customer.getPinCodeDebitCard())) {	//Compare input pin and actual pin if true go on
+				correctPin = true;	
 				System.out.println("The pin is correct\n------------");
-			}else {
+			}else {		//if false, ask again
 				System.out.println("Invalid Pin! Try again!");
 				checkPinCode(cardType, customer);
 			}
 		}
+		//Compare Pin for Credit Card
 		if(cardType == 2) {
 			System.out.println("You have selected Creditcard. Please input your pin Code:");
-			String pinCode = scannerPin.next();
-			if(pinCode.equals(customer.getPinCodeCreditCard())) {
+			String pinCode = scannerPin.next();	//gets pin input from scanner
+			if(pinCode.equals(customer.getPinCodeCreditCard())) {	//Compare input pin and actual pin if true go on
 				correctPin = true;
 				System.out.println("The pin is correct\n------------");
-			}else {
+			}else {		//if false, ask again
 				System.out.println("Invalid Pin! Try again!");
 				checkPinCode(cardType, customer);
 			}	
 		}
+		//Close Scanner and return correctPin Parameter
 		scannerPin.close();
 		return correctPin;
 	}
 	//Create Pin codes and initialize them
 		//Create Pincode
-		private static String pinCode() {
-			String pin = "";
-			int random;
-			for(int i = 0; i < 4; i++) {
-				random = (int)(Math.random() * 10);
-				pin += random;
-			}
-			return pin;
+	private static String pinCode() {
+		String pin = "";
+		int random;
+		for(int i = 0; i < 4; i++) {
+			random = (int)(Math.random() * 10);	//Create random number between 0 and 9
+			pin += random;	//add random number to existing String
 		}
-		//Create pinCodes for both Cards - triggered in AutomaticTellerMachine
-		private static void InitializePinCodes(Customer customer) {		
-			customer.setPinCodeDebitCard(pinCode());
-			customer.setPinCodeCreditCard(pinCode());
-		}
+		return pin;
+	}
+		//Create pinCodes for both Cards
+	private static void InitializePinCodes(Customer customer) {		
+		customer.setPinCodeDebitCard(pinCode());
+		customer.setPinCodeCreditCard(pinCode());
+	}
 }
 

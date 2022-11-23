@@ -7,6 +7,7 @@ public class Customer {
 	private String address;
 	private String mail;
 	private String birthDate;
+	private int age;
 	private String pinCodeDebitCard;
 	private String pinCodeCreditCard;
 	
@@ -23,15 +24,16 @@ public class Customer {
 	
 //This method calculates the age of the customer
 	public int calculateAge(int birthDay, int birthMonth, int birthYear, int todayDay, int todayMonth, int todayYear) {		
-        int age = -1;
-		if(birthYear < todayYear) {		
+        int age = -1;	//Initialize age with -1. Makes it easier to spot error in calculation
+		if(birthYear < todayYear) {		//birthYear needs to be less than actual Year, 
         	age = todayYear-birthYear;
         	if(birthMonth>todayMonth) {
-        		age--;
+        		age--;	//If birth month is greater than the actual month reduce the age by one
         	}else if(birthMonth == todayMonth && birthDay > todayDay) {
-        		age--;
+        		age--;	//If the months are the same check for the day if it is greater than the actual day reduce the age by one
         	}
         }
+		//return the age
 		return age;
 	}
 //Getter and Setter
@@ -70,6 +72,12 @@ public class Customer {
 	}
 	public void setPinCodeCreditCard(String pinCodeCreditCard) {
 		this.pinCodeCreditCard = pinCodeCreditCard;
+	}
+	public int getAge() {
+		return age;
+	}
+	public void setAge(int age) {
+		this.age = age;
 	}
 	
 
