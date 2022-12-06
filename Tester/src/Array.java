@@ -1,3 +1,4 @@
+import java.time.LocalDate;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -15,6 +16,8 @@ public class Array {
 		String birthday = "25.01.1993";
 		System.out.println(birthday.length());
 		System.out.println(calculateAge(a,b,c,d,e,f));
+		String date = LocalDate.now().toString();
+		System.out.println(date);
 	}
 	public static int calculateAge(int birthDay, int birthMonth, int birthYear, int todayDay, int todayMonth, int todayYear) {		
 	        int age = -1;
@@ -29,5 +32,7 @@ public class Array {
 			
 			return age;
 		}
+	
+	
 
 }
