@@ -15,14 +15,13 @@ public class OrderService {
 	//Customer Queue
 	private LinkedList<Customer> customerQueue = new LinkedList<Customer>();
 	//Time frame
-	private int maxTimeFrame = 60;
+	private int maxTimeFrame = 5;
 	
 	//Starting stats
 	private int customersServed = 0;
 	private int waitingTime = 0;
 	private int servingTime = 0;
 	private int timeTillNextOrder = 0;
-
 
 	//default constructor
 	public OrderService() {}
@@ -95,71 +94,66 @@ public class OrderService {
 				System.out.println("Do you want to simulate the number of customers (1) or enter each manually per minute (2)?");
 				int simulationChoice = scanner.nextInt();
 				if(simulationChoice == 1) {
+					
 //Simulating
 					System.out.println("You have selected: Simulating.");
 					
-					for (int i = 0; i < maxTimeFrame; i++) {
+					for (int currentTime = 0; currentTime < maxTimeFrame; currentTime++) {
 						//New customer Arrivals
-						randomCustomerArrival(i);
-						servingNextCustomer(i);
+						randomCustomerArrival(currentTime);
+						servingNextCustomer(currentTime);
 					}
 					validInteger = !validInteger;
 				}
 				else if(simulationChoice == 2) {
 					System.out.println("You have selected: Manual input.");
+					
 //Manual Input
-					int newCustomer;
-
-					for (int i = 0; i < maxTimeFrame; i++) {
+					for (int currentTime = 0; currentTime < maxTimeFrame; currentTime++) {
+						int newCustomer;
 	//Asking for new Customers
 						System.out.println("\nPlease enter the number of customers for this minute");
-						try{
-							newCustomer = scanner.nextInt();
-							scanner.close();
+							try{
+								newCustomer = scanner.nextInt();
+								if(newCustomer < 0) {
+									scanner.close();
+									throw new Exception();
+								}
+								newCustomerArrival(newCustomer,currentTime);
+							}
+							catch(Exception e) {
+								scanner.close();
+								throw new Exception("This input is not valid! Only positive Integers or 0 are allowed.");
 						}
-						catch(Exception e) {
-							scanner.close();
-							throw new Exception("This input is not valid! Only Integers are allowed.");
-						}
-						if(newCustomer < 0) {
-							scanner.close();
-							throw new Exception("This input is not valid! At least 0 customer are needed. No negative.");
-						}
-						newCustomerArrival(newCustomer,i);
 	//Next Customer
-						servingNextCustomer(i);						
+						servingNextCustomer(currentTime);						
 					}
 					validInteger = !validInteger;
 				}
 				else
 					System.out.println("Invalid Integer! Try again!\n");
 
-//Statistics	
-				int averageWaitingTime = 0;
-				int averageServingTime = 0;
-				if(customersServed != 0) {
-					//Calculate Average Waiting Time
-					averageWaitingTime = (int)(waitingTime/customersServed);
-					//Calculate Average Serving time
-					float averageServingTimeFloat = servingTime/customersServed;
-					if(averageServingTimeFloat < 1.5)
-						averageServingTime = 1;
-					else if(averageServingTimeFloat >= 1.5 && averageServingTimeFloat < 2.5)
-						averageServingTime = 2;
-					else
-						averageServingTime = 3;
+//Calculate Statistics	
 				}
-				
-				
-					
-				printStatistics(customersServed, averageWaitingTime, averageServingTime);
-			}
+				int averageWaitingTime;
+				int averageServingTime;
+				if(customersServed > 0) {
+					averageWaitingTime = Math.round(waitingTime/customersServed);
+					averageServingTime = Math.round(servingTime/customersServed);
+				}else {
+					averageWaitingTime = 0;
+					averageServingTime = 0;
+				}	
+				printStatistics(averageWaitingTime, averageServingTime);
+			
 			scanner.close();
 		}
 		catch(Exception e) {
 			scanner.close();
 			throw new Exception(e + "\nThis input is not valid! Only Integers are allowed.");
 		}
+		
+		scanner.close();
 	}
 	
 	/**
@@ -167,22 +161,24 @@ public class OrderService {
 	 * Changes 'timeTillNextOrder' based on customer order time
 	 * Changes 'waitingTime' based on actualTime and timeOfArrival
 	 * Changes 'servingTime' based on customer orderTime
-	 * @param actualTime
+	 * @param currentTime
 	 */
-	private void servingNextCustomer(int actualTime) {
+	private void servingNextCustomer(int currentTime) {
+		//Imbiss ist frei und Warteschlange nicht leer
 		if(timeTillNextOrder == 0) {
 			if(!customerQueue.isEmpty()) {
 				timeTillNextOrder = customerQueue.getFirst().getOrderTime();
-				waitingTime += (actualTime - customerQueue.getFirst().getTimeOfArrival());
-				servingTime += customerQueue.getFirst().orderTime;
+				waitingTime += (currentTime - customerQueue.getFirst().getTimeOfArrival());
+				servingTime += timeTillNextOrder;
 			}
 		}
-		else if(timeTillNextOrder == 1) {
+		//Wenn eine Zeiteinheit verbleibend, Kunde aus Warteschlange entfernen
+		if(timeTillNextOrder == 1) {
 			customerQueue.removeFirst();
 			customersServed++;
 			timeTillNextOrder--;
 		}
-		else
+		else if(timeTillNextOrder > 1)
 			timeTillNextOrder--;
 	}
 	
@@ -192,7 +188,7 @@ public class OrderService {
 	 * @param averageWaitingTime
 	 * @param averageServingTime
 	 */
-	private void printStatistics(int customersServed, int averageWaitingTime, int averageServingTime) {
+	private void printStatistics(int averageWaitingTime, int averageServingTime) {
 		System.out.println("\n--- STATISTICS---\n\nSimulated time frame: " + maxTimeFrame + " minutes"
 						+ "\nTotal number of customers: " + (customerQueue.size() + customersServed)
 						+ "\nNumber of customers served: " + customersServed
