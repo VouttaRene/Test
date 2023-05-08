@@ -10,48 +10,48 @@ import Ticket.Ticket;
  * @mail u38509@hs-harz.de
  * @version 1.0
  * 
- * This class handles all method for the shop
+ * @description This class handles all method for the shop
  */
 public class Shop {
 	
 	Currency currency = Currency.EUR;
 	
 	//Create new tickets and filling an array with them
-	Ticket cinemaTicket1 = new CinemaTicket("The Whale", "Goslar", 10.00, 5, false, 117, true, false);
-	Ticket cinemaTicket2 = new CinemaTicket("Harry Potter und der Gefangene von Askaban", "Hannover", 12.00, 20, false, 142, true, false);
-	Ticket cinemaTicket3 = new CinemaTicket("Der Herr der Ringe: Die Rückkehr des Königs", "Wernigerode", 11.00, 0, false, 210, true, true);
+	Ticket cinemaTicket1 = new CinemaTicket("Spider-Man: No Way Home", "Goslar", 12.00, 0, false, 148, true, true);
+	Ticket cinemaTicket2 = new CinemaTicket("Get Out", "Hannover", 9.00, 0, true, 148, false, true);
+	Ticket cinemaTicket3 = new CinemaTicket("Zack Snyder's Justice League", "Halle", 16.00, 10, false, 242, true, false);
 	
-	Ticket concertTicket1 = new ConcertTicket("Ed Sheeran", "Frankfurt", 70.00, 2, false, true);
-	Ticket concertTicket2 = new ConcertTicket("AnnenMayKantereit", "Leipzig", 50.00, 10, false, true);
+	Ticket concertTicket1 = new ConcertTicket("Klavierkonzert", "Wernigerode", 20.00, 5, false, false);
+	Ticket concertTicket2 = new ConcertTicket("Imagine Dragons", "Hannover", 70.00, 0, false, true);
 	
-	Ticket[] tickets = 	{cinemaTicket1, 
+	Ticket[] tickets = 	{concertTicket1,
+			 			 concertTicket2,
+			 			 cinemaTicket1, 
 						 cinemaTicket2,
-						 cinemaTicket3,
-						 concertTicket1,
-						 concertTicket2
+						 cinemaTicket3
 						};
 	
 	/**
 	 * 
 	 * @throws Exception
 	 * 
-	 * This method prints out all Information of the tickets in the array after it calculated the price and the discounted price
+	 * @description This method prints out all Information of the tickets in the array after it calculated the price and the discounted price
 	 */
 	public void printTicket() throws Exception {
-		System.out.println("\n--- SOLD TICKETS ---\n");
+		System.out.println("--- SOLD TICKETS ---\n");
 		//Throw if there are no tickets in the array
 		if(tickets.length == 0) {
-			throw new Exception("Fehler: Ticketarray - Shop.\n");
+			throw new Exception("\nFehler: Fehlerhafte Länge des Tickets-Array - Shop.\n");
 		}
 		//loop through all the tickets-values and calculate all their prices before printing them out using the toString method.
 		//at last calculate and print out the sum of all tickets
 		for (int i = 0; i < tickets.length; i++) {
-			tickets[i].setDiscountedPrice(tickets[i].calculatePrice());
-			tickets[i].setDiscountedPrice(tickets[i].calculatePriceDiscount());
+			tickets[i].calculatePrice();
+			if(tickets[i].getDiscountedPrice() != 0)
+				tickets[i].calculatePriceDiscount();
 			System.out.println(tickets[i].toString(currency) + "\n");
-			calculateEndPrice();
 		}
-		
+		calculateEndPrice();
 	}
 	
 	//This methods calculates all discoutedPrices to get the sum of all the tickets bought
@@ -65,7 +65,7 @@ public class Shop {
 	}
 	
 	//This method handles the question if the current currency should be changed
-	public void AskForChange() {
+	public void askForChange() {
 		boolean temp = true;
 		System.out.println("Aktuelle Währung: " + currency + ".\nSoll die Währung gewechselt werden? [j/n]");
 		Scanner scanner = new Scanner(System.in);
@@ -82,7 +82,7 @@ public class Shop {
 			//if currency should not be changed then go on without change
 			else if(changeCurrency.equals("n")) {
 				temp = !temp;
-				System.out.println("Währung wird nicht gewechselt!");
+				System.out.println("Währung wird nicht gewechselt!\n");
 			}
 			//if the input is not accepted. Ask again
 			else
@@ -102,34 +102,34 @@ public class Shop {
 			String newCurrency = scanner.next();
 			//if new currency equals old currency, change nothing
 			if(newCurrency.equals(currency.toString())) {
-				System.out.println("Währung muss nicht gewechselt werden!");
+				System.out.println("Währung muss nicht gewechselt werden!\n");
 				break;
 			}
 			//change to EUR
 			else if(newCurrency.equals("EUR")) {
 				currency = Currency.EUR;
 				temp = !temp;
-				System.out.println("Neue Währung: EUR");
+				System.out.println("Neue Währung: EUR\n");
 				break;
 			}
 			//change to USD
 			else if(newCurrency.equals("USD")) {
 				currency = Currency.USD;
 				temp = !temp;
-				System.out.println("Neue Währung: USD");
+				System.out.println("Neue Währung: USD\n");
 				break;
 			}
 			//change to GBP
 			else if(newCurrency.equals("GBP")) {
 				currency = Currency.GBP;
 				temp = !temp;
-				System.out.println("Neue Währung: GBP");
+				System.out.println("Neue Währung: GBP\n");
 				break;
 			}
 			//if input is not accepted start again from AskForChange
 			else
 				temp = !temp;
-				AskForChange();
+				askForChange();
 		}
 		scanner.close();
 	}

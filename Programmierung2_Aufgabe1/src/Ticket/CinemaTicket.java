@@ -9,7 +9,7 @@ import Ticketshop.Currency;
  * @version 1.0
  * 
  *
- *This class handles all the methods for the CinemaTicket and extends Ticket
+ * @description This class handles all the methods for the CinemaTicket and extends Ticket
  */
 
 public class CinemaTicket extends Ticket{
@@ -29,7 +29,7 @@ public class CinemaTicket extends Ticket{
 	 * @param isPremium
 	 * @param is3d
 	 * 
-	 * This method is the constructor of the CinemaTicket class
+	 * @description This method is the constructor of the CinemaTicket class
 	 */
 	public CinemaTicket(String name, String location, double price, double discount, boolean isFreeOfCharge, int duration, boolean isPremium, boolean is3d) {
 		super(name, location, price, discount, isFreeOfCharge);
@@ -41,7 +41,7 @@ public class CinemaTicket extends Ticket{
 	/**
 	 * @param currency
 	 * 
-	 * This method overrides the toString-method of the Ticket class
+	 * @description This method overrides the toString-method of the Ticket class
 	 */
 	@Override
 	public String toString(Currency currency) {
@@ -54,37 +54,45 @@ public class CinemaTicket extends Ticket{
 	/**
 	 * @throws Exception
 	 * 
-	 * This method overrides the abstract calculatePrice-method of the Ticket class
+	 * @description This method overrides the abstract calculatePrice-method of the Ticket class
 	 */
 	@Override
 	public double calculatePrice() throws Exception{
-		double newPrice = super.getPrice();			
+		double newPrice = super.getPrice();
+		
 		//Throw if newPrice is equal or less than 0
-		if(newPrice <= 0) {
-			throw new Exception("Fehler: Preisberechnung - CinemaTicket.");
-		}
-		//Throw if duraction is equal or less than 0
-		else if(duration <= 0) {
-			throw new Exception("Fehler: Filmdauer - CinemaTicket.");			
+		if(newPrice <= 0) 
+			throw new Exception("\nFehler: Preisberechnung - CinemaTicket(" + super.getName() + ")\nUngültiger Preis: " + super.getPrice());
+		//Throw if duration is equal or less than 0
+		else if(duration <= 0) 
+			throw new Exception("\nFehler: Filmdauer - CinemaTicket(" + super.getName() + ")\nUngültige Filmdauer: " + duration);			
+		
+		if(super.isFreeOfCharge()) {
+			newPrice = 0;
 		}
 		else{
-			//Adding surchange for overlength
+			//Adding additional charge for overlength
 			if(duration > 160)
 				newPrice += 3.5;
 			else if(duration > 140)
 				newPrice += 2.5;
 			else if(duration > 120)
 				newPrice += 1.5;
-			else
-				newPrice += 0;
-			//Adding surchange for premium
+			
+			//Adding additional charge for premium
 			if(isPremium)
 				newPrice += 2.5;
-			//Adding surchange for 3D
+			//Adding additional charge for 3D
 			if(is3d)
 				newPrice += 3;
+			
+			if(newPrice > 0) {
+				super.setDiscountedPrice(newPrice);
+			}else
+				throw new Exception("\nFehler: Preisberechnung - CinemaTicket(" + super.getName() + ")\nUngültiger Preis: " + super.getPrice() + " nach Preiskalkulation.");
 		}
-		return newPrice;		
+		
+		return newPrice;				
 	}
 	
 }

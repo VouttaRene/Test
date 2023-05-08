@@ -6,7 +6,7 @@ package Ticketshop;
  * @mail u38509@hs-harz.de
  * @version 1.0
  * 
- * This class holds all enum Values for Currency
+ * @description This class holds all enum Values for Currency
  */
 public enum Currency {
 	EUR,

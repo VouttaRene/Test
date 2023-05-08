@@ -1,29 +1,15 @@
+import java.util.Iterator;
 
 public class Main {
-		private static char[ ] a = {'t','u','v','w','x','y','z','?'};
-		public static void main(String[ ] argv) {
-		System.out.println(pr(1));
-		System.out.println("Boolean Aufgabe:");
-		boolean runs = true;
-		for(int i = 0; i < 5; i++) {
-		while(runs) {
-		System.out.println(i);
-		if(i > -1) {
-		runs = false;
-		}
-		}
-		}
-
-		}
-		public static String pr(int i) {
-		String s = "";
-		if(i >= 0 && i < a.length) {
-		s = a[i] + pr(i+2);// + a[i];
-		}
-		return s;
-		}
+	
+	public static void main (String[] args) {
+		System.out.print(round(1.46d,0));
 		
-		
-		
+	}
+	
+	private static double round(double value, int decimalPoints) {
+	      double d = Math.pow(10, decimalPoints);
+	      return Math.round(value * d) / d;
+	   }
 
 }
