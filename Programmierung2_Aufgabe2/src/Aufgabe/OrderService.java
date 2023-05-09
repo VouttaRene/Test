@@ -8,16 +8,16 @@ import java.util.Scanner;
  * @mail u38509@hs-harz.de
  * @version 1.0
  * 
- * This class handles all methods for the Order Service and prints out the statistics
+ * This class handles all methods for the Order Service and prints out the statistics 
  */
 public class OrderService {
 	
 	//Customer Queue
 	private LinkedList<Customer> customerQueue = new LinkedList<Customer>();
 	//Time frame
-	private int maxTimeFrame = 5;
+	private int maxTimeFrame = 60;
 	
-	//Starting stats
+	//Initial Statistics
 	private int customersServed = 0;
 	private int waitingTime = 0;
 	private int servingTime = 0;
