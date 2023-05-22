@@ -15,7 +15,7 @@ public class OrderService {
 	//Customer Queue
 	private LinkedList<Customer> customerQueue = new LinkedList<Customer>();
 	//Time frame
-	private int maxTimeFrame = 60;
+	private int maxTimeFrame = 5;
 	
 	//Initial Statistics
 	private int customersServed = 0;
