@@ -1,23 +1,32 @@
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Scanner;
 
 public class Main {
 	
 	public static void main (String[] args) {
-		Scanner scanner = new Scanner(System.in);
-		for (int i = 0; i < 10; i++) {
-			int number = scanner.nextInt();
+		ArrayList<Long> longArray = new ArrayList<Long>();
 		
-			System.out.println("Nummer: " + number);
+		for (int i = 0; i < 10; i++) {
+			Long k = (long)(int)(Math.random()*1000000000);
+			longArray.add(k);
+			System.out.print(k + "\t");
 		}
 		
-		
-		
+		fillArray(longArray);
 	}
 	
-//	private static double round(double value, int decimalPoints) {
-//	      double d = Math.pow(10, decimalPoints);
-//	      return Math.round(value * d) / d;
-//	   }
+	private static void fillArray(ArrayList<Long> arrayList) {
+			
+		
+		Long i = arrayList.get(0);
+		for(int j = 1; j < arrayList.size(); j++){
+		if(arrayList.get(j) < i){
+		i = arrayList.get(j);
+		}
+		}
+		System.out.println("\n" + i);
+	}
+	
 
 }

@@ -4,27 +4,19 @@ public class MergeSort implements SortAlgorithm {
 		
 	@Override
 	public void sort(int[] array) {
-		
-		int r = array[array.length - 1];
-		int l = array[0];
-		
-		int[] leftArray, rightArray;
+		mergeSort(array, 0, array.length-1);
+	}
+	
+	public void mergeSort(int[] array, int l, int r) {
 		
 		int i, j, k;
 		int[] b = new int[array.length];
 		
-		if(r>l) {
+		if(r > l) {
 			int mid = (r+l) / 2;
-			leftArray = new int[mid];
-			rightArray = new int[mid];
-			for(int temp = 0; temp < array.length; temp++) {
-				if(temp <= mid)
-					leftArray[temp] = array[temp];
-				else
-					rightArray[temp - mid] = array[temp];
-			}
-			sort(leftArray);
-			sort(rightArray);
+			
+			mergeSort(array, l, mid);
+			mergeSort(array, mid + 1, r);
 			
 			for (i = mid + 1; i > l; i--) {
 				b[i-1] = array[i - 1];
@@ -37,12 +29,7 @@ public class MergeSort implements SortAlgorithm {
 					array[k] = b[j--];
 			}
 		}
-		
-		System.out.println("Mergesort:");
-		for(int a : array)
-			System.out.print(a);
-		System.out.println("\nEnde");
 	}
 	
-	//public int[] getArray
+
 }
