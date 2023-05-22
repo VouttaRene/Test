@@ -2,7 +2,8 @@ package aufgabe;
 
 public class SelectionSort implements SortAlgorithm {
 
-	private void sort(int[] array) {
+	@Override
+	public void sort(int[] array) {
 		int marker = array.length - 1;
 		while(marker >= 0) {
 			int max = 0;
