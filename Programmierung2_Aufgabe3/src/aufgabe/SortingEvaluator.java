@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class SortingEvaluator {
 
 	
-	int arraySize = 1000;
+	int arraySize = 10;
 	int[] array = new int[arraySize];
 	
 	/**
@@ -57,7 +57,7 @@ public class SortingEvaluator {
 		
 		printStatistics(selectionTimes, mergeTimes);
 	}
-	
+//Print statistics
 	/**
 	 * 
 	 * @param selectionTimes
@@ -91,11 +91,10 @@ public class SortingEvaluator {
 				+ "\nAverage value: " + findAverageValue(mergeTimes) + " nanoseconds");
 		
 		System.out.println("\n---PERFORMANCE COMPARISON---\n");
-		System.out.print("Arraysize: " + arraySize + ", ");
-		performanceComparison(selectionTimes, mergeTimes);
+		System.out.print("Arraysize: " + arraySize + ", " + performanceComparison(selectionTimes, mergeTimes));
+		;
 		
 	}
-	
 	/**
 	 * 
 	 * @param selectionTimes
@@ -103,13 +102,13 @@ public class SortingEvaluator {
 	 * 
 	 * This method copmpares the performance of both algorithm
 	 */
-	private void performanceComparison(ArrayList<Long> selectionTimes, ArrayList<Long> mergeTimes) {
+	private String performanceComparison(ArrayList<Long> selectionTimes, ArrayList<Long> mergeTimes) {
 		if(findAverageValue(selectionTimes) < findAverageValue(mergeTimes))
-			System.out.print("Selectionsort outperformed Mergesort");
+			return "Selectionsort outperformed Mergesort";
 		else
-			System.out.print("Mergesort outperformed Selectionsort");
+			return "Mergesort outperformed Selectionsort";
 	}
-
+//Find values
 	/**
 	 * 
 	 * @param list
@@ -124,7 +123,6 @@ public class SortingEvaluator {
 		}
 		return min;
 	}
-	
 	/**
 	 * 
 	 * @param list
@@ -139,7 +137,6 @@ public class SortingEvaluator {
 		}
 		return max;
 	}
-	
 	/**
 	 * 
 	 * @param list
@@ -152,7 +149,8 @@ public class SortingEvaluator {
 			avg += i;
 		return avg / list.size();
 	}
-	
+
+//Sort and print the array
 	/**
 	 * 
 	 * @param tempArray
@@ -177,7 +175,6 @@ public class SortingEvaluator {
 		}
 		System.out.println("]\n");
 	}
-	
 	/**
 	 * 
 	 * @param tempArray

@@ -13,5 +13,5 @@ public interface SortAlgorithm {
 	 * 
 	 * @param array
 	 */
-	public void sort(int[] array);
+	void sort(int[] array);
 }
