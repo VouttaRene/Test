@@ -20,5 +20,4 @@ public class Main {
 		SortingEvaluator sorter = new SortingEvaluator();
 		sorter.calculateRuntime();
 	}
-
 }

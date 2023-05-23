@@ -32,7 +32,6 @@ public class Stopwatch {
 	 */
 	protected void stoppStopwatch() {
 		if(isActive) {
-			startTime = 0;
 			isActive = false;
 		}
 	}

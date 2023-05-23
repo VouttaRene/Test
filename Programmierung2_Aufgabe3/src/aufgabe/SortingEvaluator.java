@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class SortingEvaluator {
 
 	
-	int arraySize = 10;
+	int arraySize = 1000;
 	int[] array = new int[arraySize];
 	
 	/**
