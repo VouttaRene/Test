@@ -1,19 +1,33 @@
 package aufgabe;
 
 import java.util.ArrayList;
-
+/**
+ * 
+ * @author René Voutta
+ * @mail u38509@hs-harz.de
+ * @version 1.0
+ *
+ * This class is the basis for this exercise
+ */
 public class SortingEvaluator {
 
 	
-	int arraySize = 10;
+	int arraySize = 1000;
 	int[] array = new int[arraySize];
 	
+	/**
+	 * This method instantiates an array with random numbers
+	 */
 	private void instantiateArray() {
 		for(int i = 0; i < array.length; i++) {
 			array[i] = (int) (Math.random()*10000);
 		}
 	}
 	
+	/**
+	 * This method instantiate an array, calculates the runtime of both algorithm, saves all the runtime values in an ArrayList 
+	 * and executes the calculation of lowest, highest and average runtime values
+	 */
 	public void calculateRuntime() {
 		instantiateArray();
 		
@@ -44,6 +58,13 @@ public class SortingEvaluator {
 		printStatistics(selectionTimes, mergeTimes);
 	}
 	
+	/**
+	 * 
+	 * @param selectionTimes
+	 * @param mergeTimes
+	 * 
+	 * This method prints out all of the statistics
+	 */
 	private void printStatistics(ArrayList<Long> selectionTimes, ArrayList<Long> mergeTimes) {
 		System.out.println("---SELECTIONSORT STATISTICS---\n");
 		if(arraySize <= 10) {
@@ -75,16 +96,26 @@ public class SortingEvaluator {
 		
 	}
 	
+	/**
+	 * 
+	 * @param selectionTimes
+	 * @param mergeTimes
+	 * 
+	 * This method copmpares the performance of both algorithm
+	 */
 	private void performanceComparison(ArrayList<Long> selectionTimes, ArrayList<Long> mergeTimes) {
-		long averageSelectionTime = findAverageValue(selectionTimes);
-		long averageMergeTime = findAverageValue(mergeTimes);
-		
-		if(averageSelectionTime < averageMergeTime)
+		if(findAverageValue(selectionTimes) < findAverageValue(mergeTimes))
 			System.out.print("Selectionsort outperformed Mergesort");
 		else
 			System.out.print("Mergesort outperformed Selectionsort");
 	}
 
+	/**
+	 * 
+	 * @param list
+	 * @return
+	 * This method finds the lowest value of an array list and returns it
+	 */
 	private long findLowestValue(ArrayList<Long> list) {
 		long min = list.get(0);
 		for(long i : list) {
@@ -94,6 +125,12 @@ public class SortingEvaluator {
 		return min;
 	}
 	
+	/**
+	 * 
+	 * @param list
+	 * @return
+	 * This method finds the highest value of an array list and returns it
+	 */
 	private long findHighestValue(ArrayList<Long> list) {
 		long max = list.get(0);
 		for(long i : list) {
@@ -103,6 +140,12 @@ public class SortingEvaluator {
 		return max;
 	}
 	
+	/**
+	 * 
+	 * @param list
+	 * @return
+	 * This method finds the average value of an array list and returns it
+	 */
 	private long findAverageValue(ArrayList<Long> list) {
 		long avg = 0;
 		for(long i : list)
@@ -110,6 +153,12 @@ public class SortingEvaluator {
 		return avg / list.size();
 	}
 	
+	/**
+	 * 
+	 * @param tempArray
+	 * 
+	 * This method prints out the sorted array
+	 */
 	public void printArray(int[] tempArray) {
 		int marker = tempArray.length - 1;
 		while(marker >= 0) {
@@ -129,6 +178,14 @@ public class SortingEvaluator {
 		System.out.println("]\n");
 	}
 	
+	/**
+	 * 
+	 * @param tempArray
+	 * @param idx1
+	 * @param idx2
+	 * 
+	 * This method swaps two values of an array 
+	 */
 	private void swap(int[] tempArray, int idx1, int idx2) {
 		int tmp = tempArray[idx1];
 		tempArray[idx1] = tempArray[idx2];
